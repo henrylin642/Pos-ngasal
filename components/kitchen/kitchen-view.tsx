@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
-import { Check, ChefHat, Clock, Utensils, Coffee, Square, CheckSquare } from 'lucide-react'
+import { Check, ChefHat, Clock, Utensils, Coffee, Square, CheckSquare, Volume2, VolumeX } from 'lucide-react'
 
 // Simple polling hook
 function usePolling(callback: () => void, interval: number) {
@@ -20,6 +20,7 @@ export function KitchenView() {
     // Use tabs to switch views
     const [activeTab, setActiveTab] = useState('active')
     const [kitchenFilter, setKitchenFilter] = useState<'ALL' | 'DRINK' | 'FOOD'>('ALL')
+    const [soundEnabled, setSoundEnabled] = useState(false)
     const [orders, setOrders] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
     const previousOrderCount = useRef(0)
@@ -83,7 +84,12 @@ export function KitchenView() {
             // Only play sound for new active orders
             if (activeTab === 'active' && data.length > previousOrderCount.current) {
                 if (audioRef.current) {
-                    audioRef.current.play().catch(e => console.log('Audio play failed', e))
+                    audioRef.current.play()
+                        .then(() => setSoundEnabled(true))
+                        .catch(e => {
+                            console.log('Audio play failed', e)
+                            setSoundEnabled(false)
+                        })
                 }
             }
             if (activeTab === 'active') {
@@ -276,6 +282,21 @@ export function KitchenView() {
                 </h1>
 
                 <div className="flex gap-4">
+                    {/* Sound Control */}
+                    <Button
+                        variant={soundEnabled ? "outline" : "destructive"}
+                        size="icon"
+                        onClick={() => {
+                            if (audioRef.current) {
+                                audioRef.current.play()
+                                    .then(() => setSoundEnabled(true))
+                                    .catch(e => console.error("Manual play failed", e))
+                            }
+                        }}
+                    >
+                        {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                    </Button>
+
                     {/* Kitchen Station Filter */}
                     <div className="flex bg-white dark:bg-gray-800 p-1 rounded-lg border">
                         <button
