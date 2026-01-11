@@ -1,11 +1,12 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
 import { getCurrentUser } from '@/lib/auth'
 
 // Fetch orders where at least one item matches the status filter
 export async function getKitchenOrders(statuses: ('PENDING' | 'COOKING' | 'COMPLETED')[] = ['PENDING', 'COOKING']) {
+    noStore() // Fix cache: ensure we always hit DB
     const user = await getCurrentUser()
     if (!user?.storeId) return []
     const storeId = user.storeId as number
