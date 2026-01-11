@@ -63,11 +63,9 @@ export async function restoreData(jsonString: string) {
             await tx.menuItem.deleteMany({ where: { storeId } })
             await tx.category.deleteMany({ where: { storeId } })
 
-            // 2. Restore Categories
+            // 2. Restore Categories (Parallel)
             // Map old ID -> new ID
-            const categoryMap = new Map<number, number>()
-
-            for (const cat of categories) {
+            const newCategories = await Promise.all(categories.map(async (cat: any) => {
                 const newCat = await tx.category.create({
                     data: {
                         storeId,
@@ -75,30 +73,31 @@ export async function restoreData(jsonString: string) {
                         sortOrder: cat.sortOrder || 0
                     }
                 })
-                categoryMap.set(cat.id, newCat.id)
+                return { oldId: cat.id, newId: newCat.id }
+            }))
+
+            const categoryMap = new Map(newCategories.map(c => [c.oldId, c.newId]))
+
+            // 3. Restore Menu Items (Parallel)
+            // Check if we need a fallback category
+            let fallbackCategoryId: number | null = null
+            const hasOrphans = menuItems.some((item: any) => !categoryMap.has(item.categoryId))
+
+            if (hasOrphans) {
+                const fallbackCat = await tx.category.create({
+                    data: {
+                        storeId,
+                        name: '未分類項目',
+                        sortOrder: 999
+                    }
+                })
+                fallbackCategoryId = fallbackCat.id
             }
 
-            // 3. Restore Menu Items
-            const menuItemMap = new Map<number, number>()
-            let fallbackCategoryId: number | null = null
-
-            for (const item of menuItems) {
-                // Try to find mapped category
+            const newMenuItems = await Promise.all(menuItems.map(async (item: any) => {
                 let newCategoryId = categoryMap.get(item.categoryId)
-
-                // If not found (orphaned item), use or create fallback category
                 if (!newCategoryId) {
-                    if (!fallbackCategoryId) {
-                        const fallbackCat = await tx.category.create({
-                            data: {
-                                storeId,
-                                name: '未分類項目',
-                                sortOrder: 999
-                            }
-                        })
-                        fallbackCategoryId = fallbackCat.id
-                    }
-                    newCategoryId = fallbackCategoryId
+                    newCategoryId = fallbackCategoryId!
                 }
 
                 const newItem = await tx.menuItem.create({
@@ -114,12 +113,14 @@ export async function restoreData(jsonString: string) {
                         updatedAt: new Date(item.updatedAt)
                     }
                 })
-                menuItemMap.set(item.id, newItem.id)
-            }
+                return { oldId: item.id, newId: newItem.id }
+            }))
 
-            // 4. Restore Orders
+            const menuItemMap = new Map(newMenuItems.map(i => [i.oldId, i.newId]))
+
+            // 4. Restore Orders (Parallel)
             if (Array.isArray(orders)) {
-                for (const order of orders) {
+                await Promise.all(orders.map(async (order: any) => {
                     const newOrder = await tx.order.create({
                         data: {
                             storeId,
@@ -133,16 +134,13 @@ export async function restoreData(jsonString: string) {
                         }
                     })
 
-                    // Restore Order Items
-                    if (Array.isArray(order.items)) {
-                        for (const item of order.items) {
-                            const newItemId = menuItemMap.get(item.menuItemId)
-                            // If menu item doesn't exist anymore (e.g. partial backup), skip? 
-                            // Or keep it if we can? Here we skip to be safe.
-                            if (!newItemId) continue
-
-                            await tx.orderItem.create({
-                                data: {
+                    // Restore Order Items (Use createMany for better performance)
+                    if (Array.isArray(order.items) && order.items.length > 0) {
+                        const orderItemsData = order.items
+                            .map((item: any) => {
+                                const newItemId = menuItemMap.get(item.menuItemId)
+                                if (!newItemId) return null
+                                return {
                                     orderId: newOrder.id,
                                     menuItemId: newItemId,
                                     quantity: item.quantity,
@@ -151,10 +149,19 @@ export async function restoreData(jsonString: string) {
                                     status: item.status
                                 }
                             })
+                            .filter((item: any) => item !== null)
+
+                        if (orderItemsData.length > 0) {
+                            await tx.orderItem.createMany({
+                                data: orderItemsData
+                            })
                         }
                     }
-                }
+                }))
             }
+        }, {
+            maxWait: 5000, // Max wait time to get a connection
+            timeout: 60000 // Increase timeout to 60s for the transaction itself
         })
 
         return { success: true }
