@@ -28,29 +28,42 @@ export function KitchenView() {
     const isUpdating = useRef(false)
     // Track pending optimistic updates { orderId: { status, timestamp } }
     const pendingUpdates = useRef<Record<number, { status: string, timestamp: number }>>({})
+    const pendingItemUpdates = useRef<Record<number, { status: string, timestamp: number }>>({})
 
     const mergeServerData = (serverData: any[]) => {
         const now = Date.now()
         return serverData.map(order => {
+            // 1. Merge Items
+            const mergedItems = order.items.map((item: any) => {
+                const pendingItem = pendingItemUpdates.current[item.id]
+                if (pendingItem) {
+                    if (now - pendingItem.timestamp > 10000) {
+                        delete pendingItemUpdates.current[item.id]
+                        return item
+                    }
+                    if (item.status === pendingItem.status) {
+                        delete pendingItemUpdates.current[item.id]
+                        return item
+                    }
+                    return { ...item, status: pendingItem.status }
+                }
+                return item
+            })
+
+            // 2. Merge Order Status
+            let mergedStatus = order.status
             const pending = pendingUpdates.current[order.id]
             if (pending) {
-                // If update is older than 10s, assume it failed/expired and trust server
                 if (now - pending.timestamp > 10000) {
                     delete pendingUpdates.current[order.id]
-                    return order
-                }
-
-                // If server status matches our expectation, we are synced!
-                if (order.status === pending.status) {
+                } else if (order.status === pending.status) {
                     delete pendingUpdates.current[order.id]
-                    return order
+                } else {
+                    mergedStatus = pending.status
                 }
-
-                // Server is stale (still showing old status).
-                // Force our local optimistic status to prevent UI flickering.
-                return { ...order, status: pending.status }
             }
-            return order
+
+            return { ...order, items: mergedItems, status: mergedStatus }
         })
     }
 
@@ -110,6 +123,9 @@ export function KitchenView() {
 
                 // Register pending update for Smart Merging
                 pendingUpdates.current[orderId] = { status: newOrderStatus, timestamp: Date.now() }
+                itemIds.forEach(id => {
+                    pendingItemUpdates.current[id] = { status, timestamp: Date.now() }
+                })
 
                 return { ...o, items: newItems, status: newOrderStatus }
             }
