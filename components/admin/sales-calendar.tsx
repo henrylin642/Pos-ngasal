@@ -30,12 +30,11 @@ export function SalesCalendar() {
 
     const fetchMonthlyWeather = async (year: number, month: number) => {
         try {
-            // Calculate start and end date for the month
-            const startDate = new Date(year, month - 1, 1)
-            const endDate = new Date(year, month, 0)
-
-            const startStr = startDate.toISOString().split('T')[0]
-            const endStr = endDate.toISOString().split('T')[0]
+            // Use local date strings to avoid UTC shift (e.g., Jan 1st 00:00 -> Dec 31st UTC)
+            const startStr = `${year}-${month.toString().padStart(2, '0')}-01`
+            // Get last day of month
+            const lastDay = new Date(year, month, 0).getDate()
+            const endStr = `${year}-${month.toString().padStart(2, '0')}-${lastDay}`
 
             const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=25.0330&longitude=121.5654&daily=weather_code&timezone=Asia%2FTaipei&start_date=${startStr}&end_date=${endStr}`)
             const data: WeatherData = await res.json()
@@ -187,7 +186,7 @@ export function SalesCalendar() {
                         <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <div className="text-sm text-muted-foreground mb-1">
+                                    <div className="text-sm text-muted-foreground mb-1" suppressHydrationWarning>
                                         {date ? date.toLocaleDateString('zh-TW') : '選擇日期'}
                                     </div>
                                     <div className="text-3xl font-bold text-primary">
@@ -232,7 +231,7 @@ export function SalesCalendar() {
                                 ) : (
                                     dailyOrders.map(order => (
                                         <div key={order.id} className="grid grid-cols-12 p-2 text-sm border-b last:border-0 hover:bg-slate-50 dark:hover:bg-slate-900">
-                                            <div className="col-span-2 text-muted-foreground">
+                                            <div className="col-span-2 text-muted-foreground" suppressHydrationWarning>
                                                 {new Date(order.createdAt).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}
                                             </div>
                                             <div className="col-span-2 font-mono text-xs text-muted-foreground pt-0.5 truncate">
