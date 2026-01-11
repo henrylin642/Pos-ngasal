@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DollarSign, ShoppingCart, TrendingUp, ListOrdered, ArrowUpRight, ArrowDownRight } from 'lucide-react'
 import { SalesCalendar } from '@/components/admin/sales-calendar'
 import { BackupButton } from '@/components/admin/backup-button'
+import { RestoreButton } from '@/components/admin/restore-button'
 import { RevenueChart } from '@/components/admin/revenue-chart'
 
 export const dynamic = 'force-dynamic'
@@ -20,7 +21,10 @@ export default async function AdminDashboard() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">儀表板</h1>
-                <BackupButton />
+                <div className="flex items-center">
+                    <BackupButton />
+                    <RestoreButton />
+                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
