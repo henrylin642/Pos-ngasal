@@ -4,17 +4,18 @@ import { useState } from 'react'
 import { ProductCard } from './product-card'
 import { Button } from '@/components/ui/button'
 import { createOrder } from '@/app/actions/order'
-import { Card, CardContent } from '@/components/ui/card'
+// import { Card, CardContent } from '@/components/ui/card' // Unused
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
+// import { Separator } from '@/components/ui/separator' // Unused
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Trash2, ShoppingBag, Utensils, Coffee, Plus, LogOut } from 'lucide-react'
+import { Trash2, ShoppingBag, Utensils, Coffee, Plus, LogOut, LayoutGrid } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { TableStatusGrid } from './table-status'
 import { logout } from '@/app/actions/auth'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 interface MenuItem {
     id: number
@@ -52,6 +53,10 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
     const [currentNotes, setCurrentNotes] = useState<string[]>([])
     const [customNote, setCustomNote] = useState('')
     const [dialogQty, setDialogQty] = useState(1)
+
+    // Mobile Cart Sheet State
+    const [isCartOpen, setIsCartOpen] = useState(false)
+    const [isTableStatusOpen, setIsTableStatusOpen] = useState(false)
 
     const filteredItems = selectedCategory === 'all'
         ? items
@@ -147,6 +152,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
             alert('訂單已送出！')
             setCart([])
             setTableNumber('')
+            setIsCartOpen(false) // Close mobile cart sheet on success
         } catch (e) {
             alert('訂單建立失敗')
         } finally {
@@ -154,23 +160,154 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
         }
     }
 
+    // Reuseable Cart Component
+    const CartContent = () => (
+        <div className="flex flex-col h-full bg-white dark:bg-gray-800">
+            <div className="p-4 border-b bg-gray-50 dark:bg-gray-900/50">
+                <div className="flex items-center gap-2 text-lg font-semibold mb-4">
+                    <ShoppingBag className="h-5 w-5" />
+                    目前訂單
+                </div>
+
+                {/* Order Settings */}
+                <div className="space-y-3">
+                    <div className="flex bg-gray-200 dark:bg-gray-700 p-1 rounded-lg">
+                        <button
+                            className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${orderType === 'DINE_IN' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'text-muted-foreground'}`}
+                            onClick={() => setOrderType('DINE_IN')}
+                        >
+                            內用
+                        </button>
+                        <button
+                            className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${orderType === 'TAKE_OUT' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'text-muted-foreground'}`}
+                            onClick={() => setOrderType('TAKE_OUT')}
+                        >
+                            外帶
+                        </button>
+                    </div>
+
+                    {orderType === 'DINE_IN' && (
+                        <div className="flex items-center gap-2">
+                            <Label htmlFor="table" className="whitespace-nowrap">桌號</Label>
+                            <Input
+                                id="table"
+                                placeholder="例如 5"
+                                value={tableNumber}
+                                onChange={(e) => setTableNumber(e.target.value)}
+                                type="number"
+                            />
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <ScrollArea className="flex-1 p-4">
+                {cart.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-40 text-muted-foreground space-y-2">
+                        <Coffee className="w-10 h-10 opacity-20" />
+                        <p>購物車是空的</p>
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {cart.map((item, index) => (
+                            <div key={`${item.menuItemId}-${index}`} className="flex items-center justify-between group bg-gray-50 dark:bg-gray-700/50 p-2 rounded-lg">
+                                <div className="flex-1 min-w-0 mr-2">
+                                    <div className="font-medium truncate">{item.name}</div>
+                                    {item.notes.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {item.notes.map((note, i) => (
+                                                <span key={i} className="text-[10px] bg-slate-200 dark:bg-slate-600 px-1 rounded text-slate-600 dark:text-slate-300">
+                                                    {note}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <div className="text-sm text-muted-foreground mt-1">${item.price} each</div>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    {/* Quantity Controls */}
+                                    <div className="flex items-center gap-1 bg-white dark:bg-gray-800 rounded-md border shadow-sm">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7 rounded-r-none"
+                                            onClick={() => updateQuantity(index, -1)}
+                                        >
+                                            <span className="text-lg font-bold leading-none mb-0.5">-</span>
+                                        </Button>
+                                        <div className="w-8 text-center text-sm font-medium">
+                                            {item.quantity}
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-7 w-7 rounded-l-none"
+                                            onClick={() => updateQuantity(index, 1)}
+                                        >
+                                            <Plus className="h-3 w-3" />
+                                        </Button>
+                                    </div>
+
+                                    <div className="font-semibold w-12 text-right">
+                                        ${(item.price * item.quantity).toFixed(0)}
+                                    </div>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-red-500 hover:bg-red-50 hover:text-red-600"
+                                        onClick={() => removeFromCart(index)}
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </ScrollArea>
+
+            <div className="p-4 border-t bg-gray-50 dark:bg-gray-900/50 space-y-4">
+                <div className="space-y-1.5">
+                    <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">小計</span>
+                        <span>${total.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-xl pt-2 border-t">
+                        <span>總計</span>
+                        <span>${total.toFixed(2)}</span>
+                    </div>
+                </div>
+
+                <Button
+                    className="w-full h-12 text-lg font-bold"
+                    size="lg"
+                    disabled={cart.length === 0 || loading}
+                    onClick={handleCheckout}
+                >
+                    {loading ? '處理中...' : '送出訂單'}
+                </Button>
+            </div>
+        </div>
+    )
+
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+        <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 flex-col md:flex-row">
             {/* Main Product Area */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-                <header className="bg-white dark:bg-gray-800 border-b p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
-                            <Utensils className="h-6 w-6" /> POS 系統
+            <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+                <header className="bg-white dark:bg-gray-800 border-b p-4 flex items-center justify-between shadow-sm z-10 shrink-0">
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <h1 className="text-xl md:text-2xl font-bold text-primary flex items-center gap-2">
+                            <Utensils className="h-5 w-5 md:h-6 md:w-6" /> <span className="hidden sm:inline">POS 系統</span>
                         </h1>
-                        <Button variant="ghost" size="sm" onClick={() => logout()} className="text-muted-foreground">
-                            <LogOut className="w-4 h-4 mr-1" /> 登出
+                        <Button variant="ghost" size="sm" onClick={() => logout()} className="text-muted-foreground px-2">
+                            <LogOut className="w-4 h-4 mr-0 md:mr-1" /> <span className="hidden md:inline">登出</span>
                         </Button>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-1 justify-end overflow-hidden ml-2">
                         {/* Category Filter Tabs */}
-                        <Tabs defaultValue="all" value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-                            <TabsList>
+                        <Tabs defaultValue="all" value={selectedCategory} onValueChange={setSelectedCategory} className="w-full max-w-md">
+                            <TabsList className="w-full justify-start overflow-x-auto no-scrollbar">
                                 <TabsTrigger value="all">全部</TabsTrigger>
                                 {categories.map(c => (
                                     <TabsTrigger key={c.id} value={c.id.toString()}>{c.name}</TabsTrigger>
@@ -180,149 +317,74 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                     </div>
                 </header>
 
-                <ScrollArea className="flex-1 p-4">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-20">
+                <ScrollArea className="flex-1 p-3 md:p-4 pb-24 md:pb-4">
+                    <div className="grid grid-cols-2 min-[450px]:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
                         {filteredItems.map(item => (
                             <ProductCard key={item.id} item={item} onAdd={() => handleItemClick(item)} />
                         ))}
                     </div>
                 </ScrollArea>
 
-                <TableStatusGrid />
-            </div>
-
-            {/* Cart Sidebar */}
-            <div className="w-96 bg-white dark:bg-gray-800 border-l flex flex-col shadow-xl z-20">
-                <div className="p-4 border-b bg-gray-50 dark:bg-gray-900/50">
-                    <div className="flex items-center gap-2 text-lg font-semibold mb-4">
-                        <ShoppingBag className="h-5 w-5" />
-                        目前訂單
-                    </div>
-
-                    {/* Order Settings */}
-                    <div className="space-y-3">
-                        <div className="flex bg-gray-200 dark:bg-gray-700 p-1 rounded-lg">
-                            <button
-                                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${orderType === 'DINE_IN' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'text-muted-foreground'}`}
-                                onClick={() => setOrderType('DINE_IN')}
-                            >
-                                內用
-                            </button>
-                            <button
-                                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${orderType === 'TAKE_OUT' ? 'bg-white dark:bg-gray-600 shadow-sm' : 'text-muted-foreground'}`}
-                                onClick={() => setOrderType('TAKE_OUT')}
-                            >
-                                外帶
-                            </button>
-                        </div>
-
-                        {orderType === 'DINE_IN' && (
-                            <div className="flex items-center gap-2">
-                                <Label htmlFor="table" className="whitespace-nowrap">桌號</Label>
-                                <Input
-                                    id="table"
-                                    placeholder="例如 5"
-                                    value={tableNumber}
-                                    onChange={(e) => setTableNumber(e.target.value)}
-                                    type="number"
-                                />
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <ScrollArea className="flex-1 p-4">
-                    {cart.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-40 text-muted-foreground space-y-2">
-                            <Coffee className="w-10 h-10 opacity-20" />
-                            <p>購物車是空的</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-4">
-                            {cart.map((item, index) => (
-                                <div key={`${item.menuItemId}-${index}`} className="flex items-center justify-between group bg-gray-50 dark:bg-gray-700/50 p-2 rounded-lg">
-                                    <div className="flex-1 min-w-0 mr-2">
-                                        <div className="font-medium truncate">{item.name}</div>
-                                        {item.notes.length > 0 && (
-                                            <div className="flex flex-wrap gap-1 mt-1">
-                                                {item.notes.map((note, i) => (
-                                                    <span key={i} className="text-[10px] bg-slate-200 dark:bg-slate-600 px-1 rounded text-slate-600 dark:text-slate-300">
-                                                        {note}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        )}
-                                        <div className="text-sm text-muted-foreground mt-1">${item.price} each</div>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                        {/* Quantity Controls */}
-                                        <div className="flex items-center gap-1 bg-white dark:bg-gray-800 rounded-md border shadow-sm">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-7 w-7 rounded-r-none"
-                                                onClick={() => updateQuantity(index, -1)}
-                                            >
-                                                <span className="text-lg font-bold leading-none mb-0.5">-</span>
-                                            </Button>
-                                            <div className="w-8 text-center text-sm font-medium">
-                                                {item.quantity}
-                                            </div>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-7 w-7 rounded-l-none"
-                                                onClick={() => updateQuantity(index, 1)}
-                                            >
-                                                <Plus className="h-3 w-3" />
-                                            </Button>
-                                        </div>
-
-                                        <div className="font-semibold w-12 text-right">
-                                            ${(item.price * item.quantity).toFixed(0)}
-                                        </div>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-8 w-8 text-red-500 hover:bg-red-50 hover:text-red-600"
-                                            onClick={() => removeFromCart(index)}
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </ScrollArea>
-
-                <div className="p-4 border-t bg-gray-50 dark:bg-gray-900/50 space-y-4">
-                    <div className="space-y-1.5">
-                        <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">小計</span>
-                            <span>${total.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between font-bold text-xl pt-2 border-t">
-                            <span>總計</span>
-                            <span>${total.toFixed(2)}</span>
-                        </div>
-                    </div>
-
-                    <Button
-                        className="w-full h-12 text-lg font-bold"
-                        size="lg"
-                        disabled={cart.length === 0 || loading}
-                        onClick={handleCheckout}
-                    >
-                        {loading ? '處理中...' : '送出訂單'}
-                    </Button>
+                {/* Desktop Table Status */}
+                <div className="hidden md:block">
+                    <TableStatusGrid />
                 </div>
             </div>
+
+            {/* Desktop Sidebar (visible on md+) */}
+            <div className="hidden md:flex w-96 bg-white dark:bg-gray-800 border-l flex-col shadow-xl z-20 shrink-0">
+                <CartContent />
+            </div>
+
+            {/* Mobile Bottom Bar (visible on md-) */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 p-3 bg-white border-t flex gap-3 items-center z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                <div className="flex-1">
+                    <div className="font-bold text-lg leading-none">
+                        ${total.toFixed(0)}
+                    </div>
+                    <span className="text-xs text-muted-foreground">{cart.length} 個項目</span>
+                </div>
+
+                {/* Mobile Table Status Trigger */}
+                <Button variant="outline" size="icon" onClick={() => setIsTableStatusOpen(true)}>
+                    <LayoutGrid className="h-5 w-5" />
+                </Button>
+
+                {/* Mobile Cart Trigger */}
+                <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
+                    <SheetTrigger asChild>
+                        <Button size="default" className="shadow-lg px-6">
+                            <ShoppingBag className="w-4 h-4 mr-2" />
+                            購物車
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[85vh] p-0 rounded-t-xl">
+                        <div className="h-full pt-4">
+                            <CartContent />
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
+
+            {/* Mobile Table Status Dialog */}
+            <Dialog open={isTableStatusOpen} onOpenChange={setIsTableStatusOpen}>
+                <DialogContent className="max-w-[95vw] h-[80vh] overflow-y-auto w-full p-0">
+                    <DialogHeader className="p-4 pb-2">
+                        <DialogTitle>桌位狀態</DialogTitle>
+                    </DialogHeader>
+                    <div className="p-2">
+                        <TableStatusGrid />
+                    </div>
+                    <DialogFooter className="p-4 pt-0">
+                        <Button onClick={() => setIsTableStatusOpen(false)}>關閉</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
 
             {/* Add to Cart Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto w-[95vw]">
                     <DialogHeader>
                         <DialogTitle>{selectedItem?.name}</DialogTitle>
                     </DialogHeader>
@@ -371,8 +433,8 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                         </div>
                     </div>
 
-                    <DialogFooter>
-                        <Button onClick={confirmAddToCart} className="w-full">加入購物車</Button>
+                    <DialogFooter className="sticky bottom-0 bg-white pt-2 pb-2">
+                        <Button onClick={confirmAddToCart} className="w-full h-12 text-lg">加入購物車</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
