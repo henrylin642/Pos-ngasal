@@ -86,9 +86,11 @@ export function KitchenView() {
         try {
             await updateOrderItemStatus(orderId, itemIds, status)
         } finally {
-            isUpdating.current = false
-            // Do not fetch immediately to prevent flash of stale data. 
-            // Let the next poll cycle (max 3s) sync the state.
+            // Keep polling paused for a bit to let DB consistency settle and prevent jumpiness
+            setTimeout(() => {
+                isUpdating.current = false
+                fetchOrders() // Fetch once after cooldown
+            }, 2000)
         }
     }
 
@@ -107,15 +109,31 @@ export function KitchenView() {
     }
 
     const filteredOrders = orders.filter(order => {
-        // Enforce Status Filter Client-Side (for Optimistic Updates to effectively "remove" card)
-        if (activeTab === 'active') {
-            if (order.status === 'COMPLETED') return false
-        } else {
-            if (order.status !== 'COMPLETED') return false
-        }
-
         const visibleItems = getFilteredItems(order.items)
-        return visibleItems.length > 0
+        if (visibleItems.length === 0) return false
+
+        // Station-Centric View Logic:
+        // Active Tab: Only show if there are visible items that are NOT completed.
+        // History Tab: Show if all visible items are completed.
+
+        const allVisibleCompleted = visibleItems.every((i: any) => i.status === 'COMPLETED')
+
+        if (activeTab === 'active') {
+            // If all visible items are done, hide it from Active (even if global order is Cooking)
+            if (allVisibleCompleted) return false
+            // Also hide if global status is completed (double check)
+            if (order.status === 'COMPLETED') return false
+            return true
+        } else {
+            // History Tab
+            // Show if it's fully completed OR if my station's part is done
+            // If I finished my part, it goes to history for me.
+            if (allVisibleCompleted) return true
+            // If global order is completed, show it
+            if (order.status === 'COMPLETED') return true
+
+            return false
+        }
     })
 
     const renderOrderCard = (order: any) => {
