@@ -292,7 +292,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
     )
 
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 flex-col md:flex-row">
+        <div className="flex h-[100dvh] overflow-hidden bg-gray-50 dark:bg-gray-900 flex-col md:flex-row">
             {/* Main Product Area */}
             <div className="flex-1 flex flex-col overflow-hidden min-w-0">
                 <header className="bg-white dark:bg-gray-800 border-b p-4 flex items-center justify-between shadow-sm z-10 shrink-0">
@@ -317,13 +317,14 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                     </div>
                 </header>
 
-                <ScrollArea className="flex-1 p-3 md:p-4 pb-24 md:pb-4">
+                {/* Main Content Scroll Area - Native Scrolling for Mobile Robustness */}
+                <div className="flex-1 overflow-y-auto p-3 md:p-4 pb-24 md:pb-4 overscroll-y-contain">
                     <div className="grid grid-cols-2 min-[450px]:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
                         {filteredItems.map(item => (
                             <ProductCard key={item.id} item={item} onAdd={() => handleItemClick(item)} />
                         ))}
                     </div>
-                </ScrollArea>
+                </div>
 
                 {/* Desktop Table Status */}
                 <div className="hidden md:block">
