@@ -1,0 +1,703 @@
+{
+  "timestamp": "2026-01-11T06:39:58.178Z",
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "username": "admin",
+        "password": "$2b$12$CsLjt7Ptc3GiPVcRkrg4z.jF5dPEHBaIaFzRp9hDQDR4GcR58Zf0u",
+        "role": "ADMIN",
+        "createdAt": "2026-01-11T04:42:49.571Z",
+        "updatedAt": "2026-01-11T04:42:49.571Z"
+      },
+      {
+        "id": 2,
+        "username": "kitchen",
+        "password": "$2b$12$CsLjt7Ptc3GiPVcRkrg4z.jF5dPEHBaIaFzRp9hDQDR4GcR58Zf0u",
+        "role": "KITCHEN",
+        "createdAt": "2026-01-11T04:42:49.648Z",
+        "updatedAt": "2026-01-11T04:42:49.648Z"
+      },
+      {
+        "id": 3,
+        "username": "front",
+        "password": "$2b$12$CsLjt7Ptc3GiPVcRkrg4z.jF5dPEHBaIaFzRp9hDQDR4GcR58Zf0u",
+        "role": "FRONT",
+        "createdAt": "2026-01-11T04:42:49.657Z",
+        "updatedAt": "2026-01-11T04:42:49.657Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "name": "茶飲",
+        "sortOrder": 0
+      },
+      {
+        "id": 2,
+        "name": "咖啡",
+        "sortOrder": 0
+      },
+      {
+        "id": 3,
+        "name": "主食",
+        "sortOrder": 0
+      },
+      {
+        "id": 4,
+        "name": "小吃",
+        "sortOrder": 0
+      }
+    ],
+    "menuItems": [
+      {
+        "id": 1,
+        "name": "打辣茶(熱)",
+        "price": 120,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T04:58:21.997Z",
+        "updatedAt": "2026-01-11T04:58:21.997Z"
+      },
+      {
+        "id": 2,
+        "name": "打辣茶(冰)",
+        "price": 80,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T04:58:41.529Z",
+        "updatedAt": "2026-01-11T04:58:41.529Z"
+      },
+      {
+        "id": 3,
+        "name": "打夏茶(冰)",
+        "price": 80,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:12:36.755Z",
+        "updatedAt": "2026-01-11T05:12:36.755Z"
+      },
+      {
+        "id": 4,
+        "name": "打夏茶(熱)",
+        "price": 120,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:12:52.434Z",
+        "updatedAt": "2026-01-11T05:12:52.434Z"
+      },
+      {
+        "id": 5,
+        "name": "打辣馬告(熱)",
+        "price": 150,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:13:24.363Z",
+        "updatedAt": "2026-01-11T05:13:24.363Z"
+      },
+      {
+        "id": 6,
+        "name": "美式咖啡(冰)",
+        "price": 100,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:13:54.072Z",
+        "updatedAt": "2026-01-11T05:13:54.072Z"
+      },
+      {
+        "id": 7,
+        "name": "美式咖啡(熱)",
+        "price": 100,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:14:06.848Z",
+        "updatedAt": "2026-01-11T05:14:06.848Z"
+      },
+      {
+        "id": 8,
+        "name": "馬告咖啡(冰)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:14:24.730Z",
+        "updatedAt": "2026-01-11T05:14:24.730Z"
+      },
+      {
+        "id": 9,
+        "name": "馬告咖啡(熱)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:14:33.835Z",
+        "updatedAt": "2026-01-11T05:14:33.835Z"
+      },
+      {
+        "id": 10,
+        "name": "拿鐵咖啡(冰)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:16:10.332Z",
+        "updatedAt": "2026-01-11T05:16:10.332Z"
+      },
+      {
+        "id": 11,
+        "name": "拿鐵咖啡(熱)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:16:21.150Z",
+        "updatedAt": "2026-01-11T05:16:21.150Z"
+      },
+      {
+        "id": 12,
+        "name": "焦糖拿鐵(冰)",
+        "price": 180,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:16:39.127Z",
+        "updatedAt": "2026-01-11T05:16:39.127Z"
+      },
+      {
+        "id": 13,
+        "name": "焦糖拿鐵(熱)",
+        "price": 180,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:16:49.401Z",
+        "updatedAt": "2026-01-11T05:16:49.401Z"
+      },
+      {
+        "id": 14,
+        "name": "法棍佐刺蔥",
+        "price": 80,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:17:20.457Z",
+        "updatedAt": "2026-01-11T05:17:20.457Z"
+      },
+      {
+        "id": 15,
+        "name": "小米豬肉粽",
+        "price": 100,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:17:36.961Z",
+        "updatedAt": "2026-01-11T05:17:36.961Z"
+      },
+      {
+        "id": 16,
+        "name": "馬告豬肉",
+        "price": 200,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:17:50.844Z",
+        "updatedAt": "2026-01-11T05:17:50.844Z"
+      },
+      {
+        "id": 17,
+        "name": "小米QQ球",
+        "price": 100,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:18:07.541Z",
+        "updatedAt": "2026-01-11T05:18:07.541Z"
+      },
+      {
+        "id": 18,
+        "name": "薯條條道路通羅馬",
+        "price": 100,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:18:24.754Z",
+        "updatedAt": "2026-01-11T05:18:24.754Z"
+      },
+      {
+        "id": 19,
+        "name": "馬上告白雞米花",
+        "price": 150,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:18:42.379Z",
+        "updatedAt": "2026-01-11T05:18:42.379Z"
+      },
+      {
+        "id": 20,
+        "name": "三個一起來",
+        "price": 300,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T05:18:58.229Z",
+        "updatedAt": "2026-01-11T05:18:58.229Z"
+      }
+    ],
+    "orders": [
+      {
+        "id": 1,
+        "tableNumber": "5",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 440,
+        "createdAt": "2026-01-11T04:59:08.305Z",
+        "updatedAt": "2026-01-11T06:37:24.235Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 1,
+            "orderId": 1,
+            "menuItemId": 2,
+            "quantity": 1,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 2,
+            "orderId": 1,
+            "menuItemId": 1,
+            "quantity": 3,
+            "price": 120,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "tableNumber": "1",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 600,
+        "createdAt": "2026-01-11T04:59:32.446Z",
+        "updatedAt": "2026-01-11T06:37:19.862Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 3,
+            "orderId": 2,
+            "menuItemId": 1,
+            "quantity": 5,
+            "price": 120,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 1040,
+        "createdAt": "2026-01-11T05:01:17.564Z",
+        "updatedAt": "2026-01-11T06:37:13.774Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 4,
+            "orderId": 3,
+            "menuItemId": 1,
+            "quantity": 6,
+            "price": 120,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 5,
+            "orderId": 3,
+            "menuItemId": 2,
+            "quantity": 4,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "tableNumber": "1",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 240,
+        "createdAt": "2026-01-11T05:08:55.239Z",
+        "updatedAt": "2026-01-11T06:37:19.862Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 6,
+            "orderId": 4,
+            "menuItemId": 2,
+            "quantity": 3,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 350,
+        "createdAt": "2026-01-11T05:19:29.277Z",
+        "updatedAt": "2026-01-11T06:37:13.774Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 7,
+            "orderId": 5,
+            "menuItemId": 19,
+            "quantity": 1,
+            "price": 150,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 8,
+            "orderId": 5,
+            "menuItemId": 1,
+            "quantity": 1,
+            "price": 120,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 9,
+            "orderId": 5,
+            "menuItemId": 2,
+            "quantity": 1,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 240,
+        "createdAt": "2026-01-11T05:56:59.682Z",
+        "updatedAt": "2026-01-11T06:37:13.774Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 10,
+            "orderId": 6,
+            "menuItemId": 3,
+            "quantity": 3,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "tableNumber": "2",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 650,
+        "createdAt": "2026-01-11T06:00:49.889Z",
+        "updatedAt": "2026-01-11T06:37:16.733Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 11,
+            "orderId": 7,
+            "menuItemId": 5,
+            "quantity": 3,
+            "price": 150,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 12,
+            "orderId": 7,
+            "menuItemId": 16,
+            "quantity": 1,
+            "price": 200,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "tableNumber": "4",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 580,
+        "createdAt": "2026-01-11T06:02:31.108Z",
+        "updatedAt": "2026-01-11T06:36:27.981Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 13,
+            "orderId": 8,
+            "menuItemId": 3,
+            "quantity": 1,
+            "price": 80,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 14,
+            "orderId": 8,
+            "menuItemId": 11,
+            "quantity": 1,
+            "price": 150,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 15,
+            "orderId": 8,
+            "menuItemId": 16,
+            "quantity": 1,
+            "price": 200,
+            "notes": null,
+            "status": "PENDING"
+          },
+          {
+            "id": 16,
+            "orderId": 8,
+            "menuItemId": 19,
+            "quantity": 1,
+            "price": 150,
+            "notes": null,
+            "status": "PENDING"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "tableNumber": "2",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 1230,
+        "createdAt": "2026-01-11T06:08:42.166Z",
+        "updatedAt": "2026-01-11T06:37:16.733Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 17,
+            "orderId": 9,
+            "menuItemId": 3,
+            "quantity": 5,
+            "price": 80,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 18,
+            "orderId": 9,
+            "menuItemId": 2,
+            "quantity": 1,
+            "price": 80,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 19,
+            "orderId": 9,
+            "menuItemId": 16,
+            "quantity": 3,
+            "price": 200,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 20,
+            "orderId": 9,
+            "menuItemId": 19,
+            "quantity": 1,
+            "price": 150,
+            "notes": null,
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 620,
+        "createdAt": "2026-01-11T06:14:05.250Z",
+        "updatedAt": "2026-01-11T06:37:13.774Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 21,
+            "orderId": 10,
+            "menuItemId": 1,
+            "quantity": 2,
+            "price": 120,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 22,
+            "orderId": 10,
+            "menuItemId": 14,
+            "quantity": 1,
+            "price": 80,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 23,
+            "orderId": 10,
+            "menuItemId": 19,
+            "quantity": 2,
+            "price": 150,
+            "notes": null,
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "tableNumber": "1",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 410,
+        "createdAt": "2026-01-11T06:20:25.699Z",
+        "updatedAt": "2026-01-11T06:37:19.862Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 24,
+            "orderId": 11,
+            "menuItemId": 2,
+            "quantity": 2,
+            "price": 80,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 25,
+            "orderId": 11,
+            "menuItemId": 5,
+            "quantity": 1,
+            "price": 150,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 26,
+            "orderId": 11,
+            "menuItemId": 15,
+            "quantity": 1,
+            "price": 100,
+            "notes": null,
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 200,
+        "createdAt": "2026-01-11T06:21:11.588Z",
+        "updatedAt": "2026-01-11T06:37:13.774Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 27,
+            "orderId": 12,
+            "menuItemId": 16,
+            "quantity": 1,
+            "price": 200,
+            "notes": null,
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "tableNumber": "2",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 460,
+        "createdAt": "2026-01-11T06:36:18.800Z",
+        "updatedAt": "2026-01-11T06:37:16.733Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 28,
+            "orderId": 13,
+            "menuItemId": 4,
+            "quantity": 2,
+            "price": 120,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 29,
+            "orderId": 13,
+            "menuItemId": 1,
+            "quantity": 1,
+            "price": 120,
+            "notes": null,
+            "status": "COMPLETED"
+          },
+          {
+            "id": 30,
+            "orderId": 13,
+            "menuItemId": 15,
+            "quantity": 1,
+            "price": 100,
+            "notes": null,
+            "status": "COMPLETED"
+          }
+        ]
+      }
+    ]
+  }
+}

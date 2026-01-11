@@ -1,0 +1,20 @@
+
+model NoteOption {
+  id        Int      @id @default(autoincrement())
+  label     String
+  type      String?  // e.g., 'TEMP', 'SUGAR', 'SPICE', 'OTHER'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Update OrderItem to store notes
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  menuItemId Int
+  quantity   Int
+  price      Float
+  notes      String?  // JSON string or comma separated list of notes
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
