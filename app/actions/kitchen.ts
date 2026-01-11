@@ -2,16 +2,18 @@
 
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getCurrentUser } from '@/lib/auth'
 
 // Fetch orders where at least one item matches the status filter
-// OR for simplicity, fetch orders that are active, and frontend filters items?
-// Better: Fetch orders that are NOT fully completed, or are completed if requested.
 export async function getKitchenOrders(statuses: ('PENDING' | 'COOKING' | 'COMPLETED')[] = ['PENDING', 'COOKING']) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return []
+    const storeId = user.storeId as number
+
     return await prisma.order.findMany({
         where: {
-            // IF we want history, we look for order.status == COMPLETED
-            // IF we want active, we look for order.status != COMPLETED (or PENDING/COOKING)
-            status: { in: statuses }
+            status: { in: statuses },
+            storeId
         },
         include: {
             items: {
@@ -28,6 +30,14 @@ export async function getKitchenOrders(statuses: ('PENDING' | 'COOKING' | 'COMPL
 }
 
 export async function updateOrderItemStatus(orderId: number, itemIds: number[], status: 'COOKING' | 'COMPLETED') {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    // Verify Order Ownership
+    const orderCount = await prisma.order.count({ where: { id: orderId, storeId } })
+    if (orderCount === 0) throw new Error('Order not found or access denied')
+
     console.log(`[updateOrderItemStatus] Order ${orderId}, Items: ${itemIds}, Status: ${status}`)
 
     // 1. Update the specific items

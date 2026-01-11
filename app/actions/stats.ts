@@ -1,8 +1,13 @@
 'use server'
 
 import prisma from '@/lib/prisma'
+import { getCurrentUser } from '@/lib/auth'
 
 export async function getDashboardStats() {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return { totalOrders: 0, totalRevenue: 0, lastMonthRevenue: 0, topItems: [] }
+    const storeId = user.storeId as number
+
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
@@ -17,7 +22,8 @@ export async function getDashboardStats() {
     const orders = await prisma.order.findMany({
         where: {
             createdAt: { gte: today, lt: tomorrow },
-            status: { not: 'PENDING' }
+            status: { not: 'PENDING' },
+            storeId
         },
         include: { items: true }
     })
@@ -26,7 +32,8 @@ export async function getDashboardStats() {
     const lastMonthOrders = await prisma.order.findMany({
         where: {
             createdAt: { gte: lastMonthStart, lte: lastMonthEnd },
-            status: { not: 'PENDING' }
+            status: { not: 'PENDING' },
+            storeId
         },
         select: { totalAmount: true }
     })
@@ -49,7 +56,7 @@ export async function getDashboardStats() {
     let topItemsWithCount: any[] = []
     if (topIds.length > 0) {
         const topItems = await prisma.menuItem.findMany({
-            where: { id: { in: topIds } },
+            where: { id: { in: topIds }, storeId },
             include: { category: true }
         })
         topItemsWithCount = topItems.map(item => ({
@@ -67,13 +74,18 @@ export async function getDashboardStats() {
 }
 
 export async function getMonthlyStats(year: number, month: number) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return {}
+    const storeId = user.storeId as number
+
     const startDate = new Date(year, month - 1, 1)
     const endDate = new Date(year, month, 0, 23, 59, 59)
 
     const orders = await prisma.order.findMany({
         where: {
             createdAt: { gte: startDate, lte: endDate },
-            status: { not: 'PENDING' }
+            status: { not: 'PENDING' },
+            storeId
         },
         select: { createdAt: true, totalAmount: true }
     })
@@ -89,6 +101,10 @@ export async function getMonthlyStats(year: number, month: number) {
 }
 
 export async function getDailyOrders(dateStr: string) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return []
+    const storeId = user.storeId as number
+
     const start = new Date(dateStr)
     start.setHours(0, 0, 0, 0)
     const end = new Date(start)
@@ -97,7 +113,8 @@ export async function getDailyOrders(dateStr: string) {
     const orders = await prisma.order.findMany({
         where: {
             createdAt: { gte: start, lte: end },
-            status: { not: 'PENDING' }
+            status: { not: 'PENDING' },
+            storeId
         },
         include: {
             items: {

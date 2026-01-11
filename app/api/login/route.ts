@@ -5,17 +5,33 @@ import { verifyPassword, signToken } from '@/lib/auth'
 export async function POST(request: Request) {
     try {
         const body = await request.json()
-        const { username, password } = body
+        const { storeCode, username, password } = body
 
-        if (!username || !password) {
+        if (!storeCode || !username || !password) {
             console.log('[Login] Missing credentials')
             return NextResponse.json({ error: 'Missing credentials' }, { status: 400 })
         }
 
-        console.log(`[Login] Attempting login for: ${username}`)
+        console.log(`[Login] Attempting login for: ${username} @ ${storeCode}`)
 
+        // 1. Find the Store
+        const store = await prisma.store.findUnique({
+            where: { code: storeCode }
+        })
+
+        if (!store) {
+            console.log('[Login] Store not found')
+            return NextResponse.json({ error: 'Invalid store code' }, { status: 401 })
+        }
+
+        // 2. Find the User in this Store
         const user = await prisma.user.findUnique({
-            where: { username },
+            where: {
+                storeId_username: {
+                    storeId: store.id,
+                    username: username
+                }
+            },
         })
 
         if (!user) {
@@ -24,7 +40,6 @@ export async function POST(request: Request) {
         }
 
         console.log(`[Login] User found: ${user.username}, Role: ${user.role}`)
-        console.log(`[Login] Stored Hash: ${user.password.substring(0, 10)}...`)
 
         const isValid = await verifyPassword(password, user.password)
         console.log(`[Login] Password valid? ${isValid}`)
@@ -36,6 +51,7 @@ export async function POST(request: Request) {
         // Sign JWT
         const token = await signToken({
             id: user.id,
+            storeId: user.storeId, // Add storeId to token
             username: user.username,
             role: user.role,
         })
@@ -45,6 +61,7 @@ export async function POST(request: Request) {
             success: true,
             user: {
                 id: user.id,
+                storeId: user.storeId,
                 username: user.username,
                 role: user.role,
             },

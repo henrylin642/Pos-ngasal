@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 
 export default function LoginPage() {
+    const [storeCode, setStoreCode] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -25,7 +26,7 @@ export default function LoginPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ storeCode, username, password }),
             })
 
             const data = await res.json()
@@ -50,11 +51,22 @@ export default function LoginPage() {
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center">登入 POS 系統</CardTitle>
                     <CardDescription className="text-center">
-                        請輸入您的帳號密碼以進入系統
+                        請輸入店家代碼與帳號密碼
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleLogin} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="storeCode">店家代碼</Label>
+                            <Input
+                                id="storeCode"
+                                type="text"
+                                placeholder="demo"
+                                value={storeCode}
+                                onChange={(e) => setStoreCode(e.target.value)}
+                                required
+                            />
+                        </div>
                         <div className="space-y-2">
                             <Label htmlFor="username">使用者帳號</Label>
                             <Input
@@ -86,7 +98,8 @@ export default function LoginPage() {
                         </Button>
                     </form>
                 </CardContent>
-                <CardFooter className="flex justify-center text-xs text-muted-foreground">
+                <CardFooter className="flex justify-center text-xs text-muted-foreground flex-col gap-1">
+                    <p>預設店家代碼: demo</p>
                     <p>預設帳號: admin/123456, kitchen/123456, front/123456</p>
                 </CardFooter>
             </Card>

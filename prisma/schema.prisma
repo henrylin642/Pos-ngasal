@@ -12,17 +12,36 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
+model Store {
   id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  role      String   // FRONT, KITCHEN, ADMIN
+  code      String   @unique
+  name      String
+  users     User[]
+  categories Category[]
+  menuItems MenuItem[]
+  orders    Order[]
+  noteOptions NoteOption[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  storeId   Int
+  store     Store    @relation(fields: [storeId], references: [id])
+  username  String
+  password  String
+  role      String   // FRONT, KITCHEN, ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([storeId, username])
+}
+
 model Category {
   id        Int        @id @default(autoincrement())
+  storeId   Int
+  store     Store      @relation(fields: [storeId], references: [id])
   name      String
   items     MenuItem[]
   sortOrder Int        @default(0)
@@ -30,6 +49,8 @@ model Category {
 
 model MenuItem {
   id          Int      @id @default(autoincrement())
+  storeId     Int
+  store       Store    @relation(fields: [storeId], references: [id])
   name        String
   price       Float
   categoryId  Int
@@ -44,6 +65,8 @@ model MenuItem {
 
 model Order {
   id          Int         @id @default(autoincrement())
+  storeId     Int
+  store       Store       @relation(fields: [storeId], references: [id])
   tableNumber String?     // Nullable for Takeout
   type        String      // DINE_IN, TAKE_OUT
   status      String      // PENDING, COOKING, COMPLETED
@@ -68,9 +91,10 @@ model OrderItem {
 
 model NoteOption {
   id        Int      @id @default(autoincrement())
+  storeId   Int
+  store     Store    @relation(fields: [storeId], references: [id])
   label     String
   category  String? // e.g., "Temperature", "Sugar", "Spicy"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-

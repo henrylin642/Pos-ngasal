@@ -6,6 +6,17 @@ const prisma = new PrismaClient()
 async function main() {
     const password = await hash('123456', 12) // Default password for all
 
+    // Create Default Store
+    const store = await prisma.store.upsert({
+        where: { code: 'demo' },
+        update: {},
+        create: {
+            code: 'demo',
+            name: 'Demo Store',
+        }
+    })
+    console.log(`Store created: ${store.name} (${store.code})`)
+
     const users = [
         { username: 'admin', role: 'ADMIN' },
         { username: 'kitchen', role: 'KITCHEN' },
@@ -14,17 +25,23 @@ async function main() {
 
     for (const user of users) {
         const upsertUser = await prisma.user.upsert({
-            where: { username: user.username },
+            where: {
+                storeId_username: {
+                    storeId: store.id,
+                    username: user.username
+                }
+            },
             update: {
                 password: password,
             },
             create: {
+                storeId: store.id,
                 username: user.username,
                 password: password,
                 role: user.role,
             },
         })
-        console.log(`User created: ${upsertUser.username}`)
+        console.log(`User created: ${upsertUser.username} for store ${store.code}`)
     }
 }
 

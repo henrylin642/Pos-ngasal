@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getCurrentUser } from '@/lib/auth'
 
 interface CreateOrderData {
     items: { menuItemId: number; quantity: number; notes?: string }[]
@@ -10,10 +11,22 @@ interface CreateOrderData {
 }
 
 export async function createOrder(data: CreateOrderData) {
-    // 1. Fetch current prices
+    const user = await getCurrentUser()
+
+    // For now, assume only authenticated users (staff) create orders via this action.
+    // If we support public self-checkout later, we'll need a different mechanism (e.g. Kiosk mode token).
+    // But currently, the app is a POS for staff.
+    if (!user || !user.storeId) {
+        throw new Error('Unauthorized or Invalid Store')
+    }
+
+    const storeId = user.storeId as number
+
+    // 1. Fetch current prices scoped by store
     const menuItems = await prisma.menuItem.findMany({
         where: {
-            id: { in: data.items.map(i => i.menuItemId) }
+            id: { in: data.items.map(i => i.menuItemId) },
+            storeId: storeId // Ensure items belong to this store
         }
     })
 
@@ -39,9 +52,10 @@ export async function createOrder(data: CreateOrderData) {
         })
     }
 
-    // 3. Create Order
+    // 3. Create Order linked to store
     const order = await prisma.order.create({
         data: {
+            storeId: storeId,
             type: data.type,
             tableNumber: data.type === 'DINE_IN' ? data.tableNumber : null,
             status: 'PENDING',

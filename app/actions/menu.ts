@@ -2,11 +2,17 @@
 
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getCurrentUser } from '@/lib/auth'
 
 // Categories
 export async function getCategories() {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return []
+    const storeId = user.storeId as number
+
     try {
         return await prisma.category.findMany({
+            where: { storeId },
             orderBy: { sortOrder: 'asc' },
         })
     } catch (error) {
@@ -15,12 +21,24 @@ export async function getCategories() {
 }
 
 export async function createCategory(name: string) {
-    await prisma.category.create({ data: { name } })
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    await prisma.category.create({ data: { name, storeId } })
     revalidatePath('/admin/menu')
     revalidatePath('/admin/categories')
 }
 
 export async function updateCategory(id: number, name: string) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    // Verify ownership
+    const count = await prisma.category.count({ where: { id, storeId } })
+    if (count === 0) throw new Error('Category not found or access denied')
+
     await prisma.category.update({
         where: { id },
         data: { name },
@@ -29,6 +47,14 @@ export async function updateCategory(id: number, name: string) {
 }
 
 export async function deleteCategory(id: number) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    // Verify ownership
+    const count = await prisma.category.count({ where: { id, storeId } })
+    if (count === 0) throw new Error('Category not found or access denied')
+
     try {
         await prisma.category.delete({
             where: { id },
@@ -41,8 +67,13 @@ export async function deleteCategory(id: number) {
 
 // Menu Items
 export async function getMenuItems() {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return []
+    const storeId = user.storeId as number
+
     try {
         return await prisma.menuItem.findMany({
+            where: { storeId },
             include: { category: true },
             orderBy: { name: 'asc' },
         })
@@ -58,6 +89,10 @@ export async function createMenuItem(data: {
     description?: string
     isAvailable?: boolean
 }) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
     await prisma.menuItem.create({
         data: {
             name: data.name,
@@ -65,6 +100,7 @@ export async function createMenuItem(data: {
             categoryId: data.categoryId,
             description: data.description,
             isAvailable: data.isAvailable ?? true,
+            storeId
         },
     })
     revalidatePath('/admin/menu')
@@ -80,6 +116,14 @@ export async function updateMenuItem(
         isAvailable?: boolean
     }
 ) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    // Verify ownership
+    const count = await prisma.menuItem.count({ where: { id, storeId } })
+    if (count === 0) throw new Error('Item not found or access denied')
+
     await prisma.menuItem.update({
         where: { id },
         data,
@@ -88,6 +132,14 @@ export async function updateMenuItem(
 }
 
 export async function deleteMenuItem(id: number) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
+    // Verify ownership
+    const count = await prisma.menuItem.count({ where: { id, storeId } })
+    if (count === 0) throw new Error('Item not found or access denied')
+
     await prisma.menuItem.delete({
         where: { id },
     })

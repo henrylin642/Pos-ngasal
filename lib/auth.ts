@@ -1,5 +1,6 @@
 import { hash, compare } from 'bcryptjs'
 import { SignJWT, jwtVerify } from 'jose'
+import { cookies } from 'next/headers'
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'super-secret-key-change-me')
 
@@ -22,8 +23,16 @@ export async function signToken(payload: any) {
 export async function verifyToken(token: string) {
     try {
         const { payload } = await jwtVerify(token, JWT_SECRET)
-        return payload
+        return payload as any // Cast to any or define interface
     } catch (err) {
         return null
     }
+}
+
+export async function getCurrentUser() {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('auth-token')?.value
+    if (!token) return null
+
+    return await verifyToken(token)
 }
