@@ -80,11 +80,26 @@ export async function restoreData(jsonString: string) {
 
             // 3. Restore Menu Items
             const menuItemMap = new Map<number, number>()
+            let fallbackCategoryId: number | null = null
 
             for (const item of menuItems) {
-                // Skip if category was not found (shouldn't happen if consistent)
-                const newCategoryId = categoryMap.get(item.categoryId)
-                if (!newCategoryId) continue
+                // Try to find mapped category
+                let newCategoryId = categoryMap.get(item.categoryId)
+
+                // If not found (orphaned item), use or create fallback category
+                if (!newCategoryId) {
+                    if (!fallbackCategoryId) {
+                        const fallbackCat = await tx.category.create({
+                            data: {
+                                storeId,
+                                name: '未分類項目',
+                                sortOrder: 999
+                            }
+                        })
+                        fallbackCategoryId = fallbackCat.id
+                    }
+                    newCategoryId = fallbackCategoryId
+                }
 
                 const newItem = await tx.menuItem.create({
                     data: {
@@ -145,6 +160,10 @@ export async function restoreData(jsonString: string) {
         return { success: true }
     } catch (error) {
         console.error('Restore failed:', error)
-        throw new Error('Failed to restore data')
+        // Return error message to client
+        if (error instanceof Error) {
+            return { success: false, error: error.message }
+        }
+        return { success: false, error: 'Unknown error occurred' }
     }
 }

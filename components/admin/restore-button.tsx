@@ -26,9 +26,15 @@ export function RestoreButton() {
         reader.onload = async (event) => {
             try {
                 const jsonString = event.target?.result as string
-                await restoreData(jsonString)
-                alert('資料已成功恢復')
-                router.refresh()
+                const result = await restoreData(jsonString)
+
+                if (result && result.success) {
+                    alert('資料已成功恢復')
+                    router.refresh()
+                } else {
+                    // @ts-ignore
+                    alert(`恢復失敗: ${result?.error || '不明錯誤'}`)
+                }
             } catch (error) {
                 console.error(error)
                 alert('恢復失敗，請檢查檔案格式')

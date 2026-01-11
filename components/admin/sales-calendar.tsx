@@ -22,15 +22,46 @@ export function SalesCalendar() {
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
 
     // New State
+    // Stores date string (YYYY-MM-DD) -> weather code
+    const [monthlyWeather, setMonthlyWeather] = useState<Record<string, number>>({})
     const [dailyOrders, setDailyOrders] = useState<any[]>([])
     const [ordersLoading, setOrdersLoading] = useState(false)
     const [weatherCode, setWeatherCode] = useState<number | null>(null)
 
+    const fetchMonthlyWeather = async (year: number, month: number) => {
+        try {
+            // Calculate start and end date for the month
+            const startDate = new Date(year, month - 1, 1)
+            const endDate = new Date(year, month, 0)
+
+            const startStr = startDate.toISOString().split('T')[0]
+            const endStr = endDate.toISOString().split('T')[0]
+
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=25.0330&longitude=121.5654&daily=weather_code&timezone=Asia%2FTaipei&start_date=${startStr}&end_date=${endStr}`)
+            const data: WeatherData = await res.json()
+
+            if (data.daily) {
+                const weatherMap: Record<string, number> = {}
+                data.daily.time.forEach((time, index) => {
+                    weatherMap[time] = data.daily.weather_code[index]
+                })
+                setMonthlyWeather(weatherMap)
+            }
+        } catch (error) {
+            console.error('Failed to fetch monthly weather:', error)
+        }
+    }
+
     const fetchStats = async (month: Date) => {
         setLoading(true)
         try {
-            const data = await getMonthlyStats(month.getFullYear(), month.getMonth() + 1)
+            const year = month.getFullYear()
+            const monthNum = month.getMonth() + 1
+            const data = await getMonthlyStats(year, monthNum)
             setMonthlyData(data)
+
+            // Also fetch weather for this month
+            await fetchMonthlyWeather(year, monthNum)
         } catch (error) {
             console.error(error)
         } finally {
@@ -45,8 +76,11 @@ export function SalesCalendar() {
             const orders = await getDailyOrders(dateStr)
             setDailyOrders(orders)
 
-            // Fetch Weather
-            // Taipei coordinates: 25.0330, 121.5654
+            // For the selected day, use the monthly data if available, or fetch specifically if needed
+            // But since we fetch monthly, we might already have it.
+            // However, the selected date might be outside the current month view if user clicked differently.
+            // Let's keep the specific fetch for the detail card to be safe and accurate for "today".
+
             const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=25.0330&longitude=121.5654&daily=weather_code&timezone=Asia%2FTaipei&start_date=${dateStr}&end_date=${dateStr}`)
             const weatherData: WeatherData = await res.json()
             if (weatherData.daily && weatherData.daily.weather_code.length > 0) {
@@ -73,16 +107,35 @@ export function SalesCalendar() {
         setCurrentMonth(month)
     }
 
+    const getWeatherIconSmall = (code: number | undefined) => {
+        if (code === undefined) return null
+        const className = "h-3 w-3 mb-0.5" // Small icon style
+
+        if (code <= 3) return <Sun className={`${className} text-yellow-500`} />
+        if (code <= 48) return <Cloud className={`${className} text-gray-400`} />
+        if (code <= 67) return <CloudRain className={`${className} text-blue-500`} />
+        if (code <= 77) return <Snowflake className={`${className} text-blue-300`} />
+        if (code <= 82) return <CloudRain className={`${className} text-blue-600`} />
+        return <CloudSun className={`${className} text-orange-400`} />
+    }
+
     // Custom day content to show revenue
     const renderDay = (day: Date) => {
         const dateKey = day.toISOString().split('T')[0]
         const revenue = monthlyData[dateKey]
+        const wCode = monthlyWeather[dateKey]
 
         return (
-            <div className="relative flex flex-col items-center justify-center w-full h-full p-0">
-                <span className="text-sm font-medium">{day.getDate()}</span>
+            <div className="relative flex flex-col items-center justify-start w-full h-full pt-1">
+                {/* Weather displayed at top */}
+                <div className="h-4 flex items-center justify-center">
+                    {getWeatherIconSmall(wCode)}
+                </div>
+
+                <span className="text-sm font-medium leading-none mb-1">{day.getDate()}</span>
+
                 {revenue !== undefined && revenue > 0 && (
-                    <span className="text-[10px] text-green-600 font-bold mt-[-2px]">
+                    <span className="text-[10px] text-green-600 font-bold leading-none">
                         ${revenue}
                     </span>
                 )}
@@ -117,7 +170,10 @@ export function SalesCalendar() {
                             onSelect={setDate}
                             month={currentMonth}
                             onMonthChange={handleMonthChange}
-                            className="rounded-md border shadow"
+                            className="rounded-md border shadow p-3"
+                            classNames={{
+                                day: "h-16 w-16 p-0 font-normal aria-selected:opacity-100"
+                            }}
                             components={{
                                 // @ts-expect-error: DayContent type mismatch
                                 DayContent: ({ date: day }) => renderDay(day)
