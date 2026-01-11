@@ -139,7 +139,10 @@ export function KitchenView() {
                         </Badge>
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {new Date(order.createdAt).toLocaleTimeString()}
+                        <Clock className="w-3 h-3" />
+                        <span suppressHydrationWarning>
+                            {new Date(order.createdAt).toLocaleTimeString()}
+                        </span>
                     </div>
                     <div className="text-lg font-bold mt-1">
                         {order.type === 'DINE_IN' ? `桌號: ${order.tableNumber}` : '外帶'}
