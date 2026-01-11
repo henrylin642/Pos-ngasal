@@ -87,7 +87,8 @@ export function KitchenView() {
             await updateOrderItemStatus(orderId, itemIds, status)
         } finally {
             isUpdating.current = false
-            fetchOrders()
+            // Do not fetch immediately to prevent flash of stale data. 
+            // Let the next poll cycle (max 3s) sync the state.
         }
     }
 
