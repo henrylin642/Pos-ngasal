@@ -98,10 +98,10 @@ export function KitchenView() {
     // Poll every 3 seconds
     useEffect(() => {
         fetchOrders()
+        fetchOrders()
         const interval = setInterval(fetchOrders, 3000)
-        // Simple "Ding" sound (Base64 MP3)
-        const BEEP_URL = 'data:audio/mp3;base64,SUQzBAAAAAABAFRYWFQAAAASAAADbWFqb3JfYnJhbmQAbXA0MgBUWFhUAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhUAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzb21tcDQyAFRTU0UAAAAOAAADTGF2ZjU3LjU2LjEwMAAAAAAAAAAAAAAA//uQZAAAAAAAABAAAAAAAAAAAAQNGluZzEAAAABAAAAiQAAD5CAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgAAD/7kGQAABAAABAAAAAAAABAAAABIMTuaYAAAAAAABAAAAE0gBLqYAAAAAAABAAAAAAH//uQZACAAABAAAAAAAABAAAAAAQSDU5mAAAAAAABAAAAAAH//uQZACAAABAAAAAAAABAAAAAAQSDU5mAAAAAAABAAAAAAH//uQZACAAABAAAAAAAABAAAAAAQSDU5mAAAAAAABAAAAAAH//uQZACAAABAAAAAAAABAAAAAAQSDU5mAAAAAAABAAAAAAH/'
-        audioRef.current = new Audio(BEEP_URL)
+        // Custom notification sound
+        audioRef.current = new Audio('/kitchen-order.mp3')
         return () => clearInterval(interval)
     }, [activeTab]) // Re-run when tab changes
 
