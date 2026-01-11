@@ -385,7 +385,10 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
 
             {/* Add to Cart Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto w-[95vw]">
+                <DialogContent
+                    className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto w-[95vw]"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                >
                     <DialogHeader>
                         <DialogTitle>{selectedItem?.name}</DialogTitle>
                     </DialogHeader>
