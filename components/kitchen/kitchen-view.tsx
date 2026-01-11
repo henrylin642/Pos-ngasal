@@ -25,7 +25,11 @@ export function KitchenView() {
     const previousOrderCount = useRef(0)
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
+    const isUpdating = useRef(false)
+
     const fetchOrders = async () => {
+        if (isUpdating.current) return // Skip polling if user is updating
+
         try {
             // We fetch filter: ['PENDING', 'COOKING'] for active, ['COMPLETED'] for history.
             // Note: If an order has Mixed items (some Pending, some Completed), it is still "Active" (Cooking).
@@ -48,7 +52,7 @@ export function KitchenView() {
         }
     }
 
-    // Poll every 5 seconds
+    // Poll every 3 seconds
     useEffect(() => {
         fetchOrders()
         const interval = setInterval(fetchOrders, 3000)
@@ -57,6 +61,8 @@ export function KitchenView() {
     }, [activeTab]) // Re-run when tab changes
 
     const handleBatchUpdate = async (orderId: number, itemIds: number[], status: 'COOKING' | 'COMPLETED') => {
+        isUpdating.current = true
+
         // Optimistic Update: Update specific items within the order
         setOrders(prev => prev.map(o => {
             if (o.id === orderId) {
@@ -75,8 +81,12 @@ export function KitchenView() {
             return o
         }))
 
-        await updateOrderItemStatus(orderId, itemIds, status)
-        fetchOrders()
+        try {
+            await updateOrderItemStatus(orderId, itemIds, status)
+        } finally {
+            isUpdating.current = false
+            fetchOrders()
+        }
     }
 
 
@@ -94,6 +104,13 @@ export function KitchenView() {
     }
 
     const filteredOrders = orders.filter(order => {
+        // Enforce Status Filter Client-Side (for Optimistic Updates to effectively "remove" card)
+        if (activeTab === 'active') {
+            if (order.status === 'COMPLETED') return false
+        } else {
+            if (order.status !== 'COMPLETED') return false
+        }
+
         const visibleItems = getFilteredItems(order.items)
         return visibleItems.length > 0
     })
