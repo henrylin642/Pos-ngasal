@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button'
 import { ChevronUp, ChevronDown, Users, Coffee, Trash2, Receipt } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export function TableStatusGrid() {
+interface TableStatusGridProps {
+    variant?: 'desktop' | 'mobile'
+}
+
+export function TableStatusGrid({ variant = 'desktop' }: TableStatusGridProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [statuses, setStatuses] = useState<TableStatus[]>([])
 
@@ -47,6 +51,55 @@ export function TableStatusGrid() {
         }
     }
 
+    const renderGrid = () => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {statuses.map(table => (
+                <Card key={table.tableNumber} className={cn("border-2 transition-colors relative group", getStatusColor(table.status))}>
+                    <CardContent className="p-3 flex flex-col items-center justify-center text-center h-full min-h-[120px]">
+                        <div className="text-xl font-bold mb-1 flex items-center gap-2">
+                            <Coffee className="h-5 w-5 opacity-50" />
+                            {table.tableNumber} 桌
+                        </div>
+                        <div className="text-sm font-semibold mb-1">
+                            {getStatusLabel(table.status)}
+                        </div>
+                        {table.totalAmount !== undefined && (
+                            <div className="text-lg font-mono font-bold my-1">
+                                ${table.totalAmount}
+                            </div>
+                        )}
+
+                        {table.status !== 'FREE' && (
+                            <Button
+                                size="sm"
+                                variant="destructive"
+                                className={cn(
+                                    "mt-2 text-xs w-full transition-opacity",
+                                    variant === 'desktop' ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                                )}
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleClearTable(table.tableNumber)
+                                }}
+                            >
+                                <Receipt className="w-3 h-3 mr-1" />
+                                清桌/結帳
+                            </Button>
+                        )}
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+
+    if (variant === 'mobile') {
+        return (
+            <div className="h-full w-full overflow-y-auto">
+                {renderGrid()}
+            </div>
+        )
+    }
+
     return (
         <div className={cn(
             "fixed bottom-0 left-0 right-96 transition-all duration-300 z-10 bg-white dark:bg-gray-900 border-t shadow-[0_-5px_10px_rgba(0,0,0,0.05)]",
@@ -69,41 +122,7 @@ export function TableStatusGrid() {
 
             {/* Grid Content */}
             <div className="p-4 overflow-auto h-[calc(100%-3rem)] bg-slate-50/50 dark:bg-gray-950/50">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {statuses.map(table => (
-                        <Card key={table.tableNumber} className={cn("border-2 transition-colors relative group", getStatusColor(table.status))}>
-                            <CardContent className="p-3 flex flex-col items-center justify-center text-center h-full min-h-[120px]">
-                                <div className="text-xl font-bold mb-1 flex items-center gap-2">
-                                    <Coffee className="h-5 w-5 opacity-50" />
-                                    {table.tableNumber} 桌
-                                </div>
-                                <div className="text-sm font-semibold mb-1">
-                                    {getStatusLabel(table.status)}
-                                </div>
-                                {table.totalAmount !== undefined && (
-                                    <div className="text-lg font-mono font-bold my-1">
-                                        ${table.totalAmount}
-                                    </div>
-                                )}
-
-                                {table.status !== 'FREE' && (
-                                    <Button
-                                        size="sm"
-                                        variant="destructive"
-                                        className="mt-2 text-xs w-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            handleClearTable(table.tableNumber)
-                                        }}
-                                    >
-                                        <Receipt className="w-3 h-3 mr-1" />
-                                        清桌/結帳
-                                    </Button>
-                                )}
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                {renderGrid()}
             </div>
         </div>
     )

@@ -374,7 +374,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                         <DialogTitle>桌位狀態</DialogTitle>
                     </DialogHeader>
                     <div className="p-2">
-                        <TableStatusGrid />
+                        <TableStatusGrid variant="mobile" />
                     </div>
                     <DialogFooter className="p-4 pt-0">
                         <Button onClick={() => setIsTableStatusOpen(false)}>關閉</Button>
