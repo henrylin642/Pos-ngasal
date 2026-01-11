@@ -68,10 +68,17 @@ export function SalesCalendar() {
         }
     }
 
+    const toLocalISOString = (date: Date) => {
+        const year = date.getFullYear()
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const day = date.getDate().toString().padStart(2, '0')
+        return `${year}-${month}-${day}`
+    }
+
     const fetchDailyData = async (selectedDate: Date) => {
         setOrdersLoading(true)
         try {
-            const dateStr = selectedDate.toISOString().split('T')[0]
+            const dateStr = toLocalISOString(selectedDate)
             const orders = await getDailyOrders(dateStr)
             setDailyOrders(orders)
 
@@ -120,7 +127,7 @@ export function SalesCalendar() {
 
     // Custom day content to show revenue
     const renderDay = (day: Date) => {
-        const dateKey = day.toISOString().split('T')[0]
+        const dateKey = toLocalISOString(day)
         const revenue = monthlyData[dateKey]
         const wCode = monthlyWeather[dateKey]
 
@@ -152,7 +159,7 @@ export function SalesCalendar() {
         return <CloudSun className="h-8 w-8 text-orange-400" />
     }
 
-    const selectedDateRevenue = date ? monthlyData[date.toISOString().split('T')[0]] : 0
+    const selectedDateRevenue = date ? monthlyData[toLocalISOString(date)] : 0
 
     return (
         <Card className="col-span-1 md:col-span-2 lg:col-span-3 h-fit">
@@ -161,7 +168,7 @@ export function SalesCalendar() {
                 <CardDescription>查看每日營收、天氣與詳細訂單</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
-                <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex flex-col lg:flex-row gap-8">
                     <div className="flex-1 flex justify-center">
                         <Calendar
                             mode="single"
