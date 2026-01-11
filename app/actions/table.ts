@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from '@/lib/prisma'
+import { getCurrentUser } from '@/lib/auth'
 
 export interface TableStatus {
     tableNumber: number
@@ -10,6 +11,10 @@ export interface TableStatus {
 }
 
 export async function getTableStatuses(): Promise<TableStatus[]> {
+    const user = await getCurrentUser()
+    if (!user?.storeId) return []
+    const storeId = user.storeId as number
+
     const totalTables = 8
     const tableStatuses: TableStatus[] = []
 
@@ -18,6 +23,7 @@ export async function getTableStatuses(): Promise<TableStatus[]> {
     // For now, let's trust "isPaid" is the source of truth for the session.
     const unpaidOrders = await prisma.order.findMany({
         where: {
+            storeId,
             type: 'DINE_IN',
             tableNumber: { not: null },
             isPaid: false
@@ -63,8 +69,13 @@ export async function getTableStatuses(): Promise<TableStatus[]> {
 }
 
 export async function clearTable(tableNumber: number) {
+    const user = await getCurrentUser()
+    if (!user?.storeId) throw new Error('Unauthorized')
+    const storeId = user.storeId as number
+
     await prisma.order.updateMany({
         where: {
+            storeId,
             tableNumber: tableNumber.toString(),
             isPaid: false
         },
