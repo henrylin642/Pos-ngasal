@@ -5,6 +5,7 @@ import { SalesCalendar } from '@/components/admin/sales-calendar'
 import { BackupButton } from '@/components/admin/backup-button'
 import { RestoreButton } from '@/components/admin/restore-button'
 import { RevenueChart } from '@/components/admin/revenue-chart'
+import { VisitorStatsCard } from '@/components/admin/visitor-stats'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,6 +38,8 @@ export default async function AdminDashboard() {
                         <div className="text-2xl font-bold">{stats.totalOrders}</div>
                     </CardContent>
                 </Card>
+
+                <VisitorStatsCard />
 
                 <Card className="p-0">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
