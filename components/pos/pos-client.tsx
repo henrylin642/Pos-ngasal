@@ -10,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 // import { Separator } from '@/components/ui/separator' // Unused
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Trash2, ShoppingBag, Utensils, Coffee, Plus, LogOut, LayoutGrid } from 'lucide-react'
+import { Trash2, ShoppingBag, Utensils, Coffee, Plus, LogOut, LayoutGrid, X } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { TableStatusGrid } from './table-status'
@@ -161,12 +161,19 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
     }
 
     // Reuseable Cart Component
-    const CartContent = () => (
+    const CartContent = ({ onClose }: { onClose?: () => void }) => (
         <div className="flex flex-col h-full bg-white dark:bg-gray-800">
             <div className="p-4 border-b bg-gray-50 dark:bg-gray-900/50">
-                <div className="flex items-center gap-2 text-lg font-semibold mb-4">
-                    <ShoppingBag className="h-5 w-5" />
-                    目前訂單
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-lg font-semibold">
+                        <ShoppingBag className="h-5 w-5" />
+                        目前訂單
+                    </div>
+                    {onClose && (
+                        <Button variant="ghost" size="icon" onClick={onClose}>
+                            <X className="h-5 w-5" />
+                        </Button>
+                    )}
                 </div>
 
                 {/* Order Settings */}
@@ -361,7 +368,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                     </SheetTrigger>
                     <SheetContent side="bottom" className="h-[85vh] p-0 rounded-t-xl">
                         <div className="h-full pt-4">
-                            <CartContent />
+                            <CartContent onClose={() => setIsCartOpen(false)} />
                         </div>
                     </SheetContent>
                 </Sheet>
