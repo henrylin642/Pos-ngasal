@@ -10,5 +10,8 @@ export default async function NotesPage() {
         getCategories()
     ])
 
-    return <NotesClient initialNotes={notes} categories={categories} />
+    return <NotesClient
+        initialNotes={JSON.parse(JSON.stringify(notes))}
+        categories={JSON.parse(JSON.stringify(categories))}
+    />
 }

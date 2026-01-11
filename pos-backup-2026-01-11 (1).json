@@ -1,0 +1,304 @@
+{
+  "timestamp": "2026-01-11T17:18:38.592Z",
+  "storeId": 1,
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "storeId": 1,
+        "username": "admin",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "ADMIN",
+        "createdAt": "2026-01-11T16:30:00.797Z",
+        "updatedAt": "2026-01-11T16:30:00.797Z"
+      },
+      {
+        "id": 2,
+        "storeId": 1,
+        "username": "kitchen",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "KITCHEN",
+        "createdAt": "2026-01-11T16:30:01.474Z",
+        "updatedAt": "2026-01-11T16:30:01.474Z"
+      },
+      {
+        "id": 3,
+        "storeId": 1,
+        "username": "front",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "FRONT",
+        "createdAt": "2026-01-11T16:30:02.148Z",
+        "updatedAt": "2026-01-11T16:30:02.148Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "storeId": 1,
+        "name": "茶飲",
+        "sortOrder": 0
+      },
+      {
+        "id": 2,
+        "storeId": 1,
+        "name": "咖啡",
+        "sortOrder": 0
+      },
+      {
+        "id": 3,
+        "storeId": 1,
+        "name": "主食",
+        "sortOrder": 0
+      },
+      {
+        "id": 4,
+        "storeId": 1,
+        "name": "小吃",
+        "sortOrder": 0
+      }
+    ],
+    "menuItems": [
+      {
+        "id": 1,
+        "storeId": 1,
+        "name": "打辣茶(熱)",
+        "price": 120,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:38.328Z",
+        "updatedAt": "2026-01-11T07:46:38.328Z"
+      },
+      {
+        "id": 2,
+        "storeId": 1,
+        "name": "打辣茶(冰)",
+        "price": 80,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:39.019Z",
+        "updatedAt": "2026-01-11T07:46:39.019Z"
+      },
+      {
+        "id": 3,
+        "storeId": 1,
+        "name": "打夏茶(冰)",
+        "price": 80,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:39.703Z",
+        "updatedAt": "2026-01-11T07:46:39.703Z"
+      },
+      {
+        "id": 4,
+        "storeId": 1,
+        "name": "打夏茶(熱)",
+        "price": 120,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:40.387Z",
+        "updatedAt": "2026-01-11T07:46:40.387Z"
+      },
+      {
+        "id": 5,
+        "storeId": 1,
+        "name": "打辣馬告(熱)",
+        "price": 150,
+        "categoryId": 1,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:41.073Z",
+        "updatedAt": "2026-01-11T07:46:41.073Z"
+      },
+      {
+        "id": 6,
+        "storeId": 1,
+        "name": "美式咖啡(冰)",
+        "price": 100,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:41.844Z",
+        "updatedAt": "2026-01-11T07:46:41.844Z"
+      },
+      {
+        "id": 7,
+        "storeId": 1,
+        "name": "美式咖啡(熱)",
+        "price": 100,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:42.523Z",
+        "updatedAt": "2026-01-11T07:46:42.523Z"
+      },
+      {
+        "id": 8,
+        "storeId": 1,
+        "name": "馬告咖啡(冰)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:43.187Z",
+        "updatedAt": "2026-01-11T07:46:43.187Z"
+      },
+      {
+        "id": 9,
+        "storeId": 1,
+        "name": "馬告咖啡(熱)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:43.887Z",
+        "updatedAt": "2026-01-11T07:46:43.887Z"
+      },
+      {
+        "id": 10,
+        "storeId": 1,
+        "name": "拿鐵咖啡(冰)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:44.566Z",
+        "updatedAt": "2026-01-11T07:46:44.566Z"
+      },
+      {
+        "id": 11,
+        "storeId": 1,
+        "name": "拿鐵咖啡(熱)",
+        "price": 150,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:45.271Z",
+        "updatedAt": "2026-01-11T07:46:45.271Z"
+      },
+      {
+        "id": 12,
+        "storeId": 1,
+        "name": "焦糖拿鐵(冰)",
+        "price": 180,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:45.950Z",
+        "updatedAt": "2026-01-11T07:46:45.950Z"
+      },
+      {
+        "id": 13,
+        "storeId": 1,
+        "name": "焦糖拿鐵(熱)",
+        "price": 180,
+        "categoryId": 2,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:46.652Z",
+        "updatedAt": "2026-01-11T07:46:46.652Z"
+      },
+      {
+        "id": 14,
+        "storeId": 1,
+        "name": "法棍佐刺蔥",
+        "price": 80,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:47.349Z",
+        "updatedAt": "2026-01-11T07:46:47.349Z"
+      },
+      {
+        "id": 15,
+        "storeId": 1,
+        "name": "小米豬肉粽",
+        "price": 100,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:48.027Z",
+        "updatedAt": "2026-01-11T07:46:48.027Z"
+      },
+      {
+        "id": 16,
+        "storeId": 1,
+        "name": "馬告豬肉",
+        "price": 200,
+        "categoryId": 3,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:48.752Z",
+        "updatedAt": "2026-01-11T07:46:48.752Z"
+      },
+      {
+        "id": 17,
+        "storeId": 1,
+        "name": "小米QQ球",
+        "price": 100,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:49.479Z",
+        "updatedAt": "2026-01-11T07:46:49.479Z"
+      },
+      {
+        "id": 18,
+        "storeId": 1,
+        "name": "薯條條道路通羅馬",
+        "price": 100,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:50.251Z",
+        "updatedAt": "2026-01-11T07:46:50.251Z"
+      },
+      {
+        "id": 19,
+        "storeId": 1,
+        "name": "馬上告白雞米花",
+        "price": 150,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:50.937Z",
+        "updatedAt": "2026-01-11T07:46:50.937Z"
+      },
+      {
+        "id": 20,
+        "storeId": 1,
+        "name": "三個一起來",
+        "price": 300,
+        "categoryId": 4,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:51.770Z",
+        "updatedAt": "2026-01-11T07:46:51.770Z"
+      }
+    ],
+    "orders": []
+  }
+}

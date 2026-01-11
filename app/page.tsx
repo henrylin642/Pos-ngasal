@@ -13,7 +13,11 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <PosClient initialItems={menuItems} categories={categories} initialNotes={notes} />
+      <PosClient
+        initialItems={JSON.parse(JSON.stringify(menuItems))}
+        categories={JSON.parse(JSON.stringify(categories))}
+        initialNotes={JSON.parse(JSON.stringify(notes))}
+      />
     </main>
   )
 }
