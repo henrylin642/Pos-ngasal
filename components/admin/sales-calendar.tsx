@@ -236,7 +236,7 @@ export function SalesCalendar() {
                                                 {new Date(order.createdAt).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}
                                             </div>
                                             <div className="col-span-2 font-mono text-xs text-muted-foreground pt-0.5 truncate">
-                                                {order.id.slice(-6)}
+                                                {order.id.toString().slice(-4)}
                                             </div>
                                             <div className="col-span-6">
                                                 {order.items.map((item: any) => (
