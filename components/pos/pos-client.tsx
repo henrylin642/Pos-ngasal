@@ -278,11 +278,11 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                 <div className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">小計</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>${total.toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between font-bold text-xl pt-2 border-t">
                         <span>總計</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>${total.toFixed(0)}</span>
                     </div>
                 </div>
 
