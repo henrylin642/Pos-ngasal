@@ -11,19 +11,23 @@ export async function getNoteOptions() {
 
     return await prisma.noteOption.findMany({
         where: { storeId },
+        include: { categories: true },
         orderBy: { label: 'asc' }
     })
 }
 
-export async function createNoteOption(data: { label: string, category?: string }) {
+export async function createNoteOption(data: { label: string, categoryIds?: number[] }) {
     const user = await getCurrentUser()
     if (!user?.storeId) throw new Error('Unauthorized')
     const storeId = user.storeId as number
 
     await prisma.noteOption.create({
         data: {
-            ...data,
-            storeId
+            label: data.label,
+            storeId,
+            categories: {
+                connect: data.categoryIds?.map(id => ({ id })) || []
+            }
         }
     })
     revalidatePath('/admin/notes')

@@ -12,7 +12,7 @@ interface TableStatusGridProps {
 }
 
 export function TableStatusGrid({ variant = 'desktop' }: TableStatusGridProps) {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
     const [statuses, setStatuses] = useState<TableStatus[]>([])
 
     const fetchStatuses = async () => {
@@ -55,16 +55,16 @@ export function TableStatusGrid({ variant = 'desktop' }: TableStatusGridProps) {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {statuses.map(table => (
                 <Card key={table.tableNumber} className={cn("border-2 transition-colors relative group", getStatusColor(table.status))}>
-                    <CardContent className="p-3 flex flex-col items-center justify-center text-center h-full min-h-[120px]">
-                        <div className="text-xl font-bold mb-1 flex items-center gap-2">
-                            <Coffee className="h-5 w-5 opacity-50" />
+                    <CardContent className="p-2 flex flex-col items-center justify-center text-center h-full min-h-[90px]">
+                        <div className="text-lg font-bold mb-0.5 flex items-center gap-2">
+                            <Coffee className="h-4 w-4 opacity-50" />
                             {table.tableNumber} 桌
                         </div>
-                        <div className="text-sm font-semibold mb-1">
+                        <div className="text-xs font-semibold mb-0.5">
                             {getStatusLabel(table.status)}
                         </div>
                         {table.totalAmount !== undefined && (
-                            <div className="text-lg font-mono font-bold my-1">
+                            <div className="text-sm font-mono font-bold my-0.5">
                                 ${table.totalAmount}
                             </div>
                         )}

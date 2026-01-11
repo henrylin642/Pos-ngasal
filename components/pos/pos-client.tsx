@@ -405,16 +405,22 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                         <div className="space-y-2">
                             <Label>備註選項</Label>
                             <div className="flex flex-wrap gap-2">
-                                {initialNotes.map((note: any) => (
-                                    <Badge
-                                        key={note.id}
-                                        variant={currentNotes.includes(note.label) ? "default" : "outline"}
-                                        className="cursor-pointer text-sm py-1"
-                                        onClick={() => toggleNote(note.label)}
-                                    >
-                                        {note.label}
-                                    </Badge>
-                                ))}
+                                {initialNotes
+                                    .filter((note: any) =>
+                                        // Show note if it has no specific categories (global) OR matches item's category
+                                        (!note.categories || note.categories.length === 0) ||
+                                        note.categories.some((c: any) => c.id === selectedItem?.categoryId)
+                                    )
+                                    .map((note: any) => (
+                                        <Badge
+                                            key={note.id}
+                                            variant={currentNotes.includes(note.label) ? "default" : "outline"}
+                                            className="cursor-pointer text-sm py-1"
+                                            onClick={() => toggleNote(note.label)}
+                                        >
+                                            {note.label}
+                                        </Badge>
+                                    ))}
                             </div>
                         </div>
 

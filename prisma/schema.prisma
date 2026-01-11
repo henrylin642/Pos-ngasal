@@ -44,6 +44,7 @@ model Category {
   store     Store      @relation(fields: [storeId], references: [id])
   name      String
   items     MenuItem[]
+  noteOptions NoteOption[]
   sortOrder Int        @default(0)
 }
 
@@ -94,7 +95,7 @@ model NoteOption {
   storeId   Int
   store     Store    @relation(fields: [storeId], references: [id])
   label     String
-  category  String? // e.g., "Temperature", "Sugar", "Spicy"
+  categories Category[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
