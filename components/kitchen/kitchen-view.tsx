@@ -26,6 +26,33 @@ export function KitchenView() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
 
     const isUpdating = useRef(false)
+    // Track pending optimistic updates { orderId: { status, timestamp } }
+    const pendingUpdates = useRef<Record<number, { status: string, timestamp: number }>>({})
+
+    const mergeServerData = (serverData: any[]) => {
+        const now = Date.now()
+        return serverData.map(order => {
+            const pending = pendingUpdates.current[order.id]
+            if (pending) {
+                // If update is older than 10s, assume it failed/expired and trust server
+                if (now - pending.timestamp > 10000) {
+                    delete pendingUpdates.current[order.id]
+                    return order
+                }
+
+                // If server status matches our expectation, we are synced!
+                if (order.status === pending.status) {
+                    delete pendingUpdates.current[order.id]
+                    return order
+                }
+
+                // Server is stale (still showing old status).
+                // Force our local optimistic status to prevent UI flickering.
+                return { ...order, status: pending.status }
+            }
+            return order
+        })
+    }
 
     const fetchOrders = async () => {
         if (isUpdating.current) return // Skip polling if user is updating
@@ -35,7 +62,10 @@ export function KitchenView() {
             // Note: If an order has Mixed items (some Pending, some Completed), it is still "Active" (Cooking).
             // So logic remains: if order.status != COMPLETED, it is active.
             const statusFilter: any[] = activeTab === 'active' ? ['PENDING', 'COOKING'] : ['COMPLETED']
-            const data = await getKitchenOrders(statusFilter)
+            const rawData = await getKitchenOrders(statusFilter)
+
+            // Apply smart merging to fix flicker
+            const data = mergeServerData(rawData)
 
             // Only play sound for new active orders
             if (activeTab === 'active' && data.length > previousOrderCount.current) {
@@ -78,6 +108,9 @@ export function KitchenView() {
                 if (allCompleted) newOrderStatus = 'COMPLETED'
                 else if (anyCooking) newOrderStatus = 'COOKING'
 
+                // Register pending update for Smart Merging
+                pendingUpdates.current[orderId] = { status: newOrderStatus, timestamp: Date.now() }
+
                 return { ...o, items: newItems, status: newOrderStatus }
             }
             return o
@@ -90,7 +123,7 @@ export function KitchenView() {
             setTimeout(() => {
                 isUpdating.current = false
                 fetchOrders() // Fetch once after cooldown
-            }, 2000)
+            }, 500)
         }
     }
 
