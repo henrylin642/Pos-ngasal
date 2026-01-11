@@ -1,0 +1,598 @@
+{
+  "timestamp": "2026-01-11T18:50:50.770Z",
+  "storeId": 1,
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "storeId": 1,
+        "username": "admin",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "ADMIN",
+        "createdAt": "2026-01-11T16:30:00.797Z",
+        "updatedAt": "2026-01-11T16:30:00.797Z"
+      },
+      {
+        "id": 2,
+        "storeId": 1,
+        "username": "kitchen",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "KITCHEN",
+        "createdAt": "2026-01-11T16:30:01.474Z",
+        "updatedAt": "2026-01-11T16:30:01.474Z"
+      },
+      {
+        "id": 3,
+        "storeId": 1,
+        "username": "front",
+        "password": "$2b$12$PvwopTJbr11QC1M5BzHDCOU1xsLNNSCrVZKBpweOm8.Al/s4lQ9Ly",
+        "role": "FRONT",
+        "createdAt": "2026-01-11T16:30:02.148Z",
+        "updatedAt": "2026-01-11T16:30:02.148Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": 53,
+        "storeId": 1,
+        "name": "茶飲",
+        "sortOrder": 0
+      },
+      {
+        "id": 54,
+        "storeId": 1,
+        "name": "咖啡",
+        "sortOrder": 0
+      },
+      {
+        "id": 55,
+        "storeId": 1,
+        "name": "主食",
+        "sortOrder": 0
+      },
+      {
+        "id": 56,
+        "storeId": 1,
+        "name": "小吃",
+        "sortOrder": 0
+      }
+    ],
+    "menuItems": [
+      {
+        "id": 45,
+        "storeId": 1,
+        "name": "打辣茶(熱)",
+        "price": 120,
+        "categoryId": 53,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:38.328Z",
+        "updatedAt": "2026-01-11T07:46:38.328Z"
+      },
+      {
+        "id": 46,
+        "storeId": 1,
+        "name": "打辣茶(冰)",
+        "price": 80,
+        "categoryId": 53,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:39.019Z",
+        "updatedAt": "2026-01-11T07:46:39.019Z"
+      },
+      {
+        "id": 47,
+        "storeId": 1,
+        "name": "打夏茶(冰)",
+        "price": 80,
+        "categoryId": 53,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:39.703Z",
+        "updatedAt": "2026-01-11T07:46:39.703Z"
+      },
+      {
+        "id": 48,
+        "storeId": 1,
+        "name": "打夏茶(熱)",
+        "price": 120,
+        "categoryId": 53,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:40.387Z",
+        "updatedAt": "2026-01-11T07:46:40.387Z"
+      },
+      {
+        "id": 49,
+        "storeId": 1,
+        "name": "打辣馬告(熱)",
+        "price": 150,
+        "categoryId": 53,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:41.073Z",
+        "updatedAt": "2026-01-11T07:46:41.073Z"
+      },
+      {
+        "id": 50,
+        "storeId": 1,
+        "name": "美式咖啡(冰)",
+        "price": 100,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:41.844Z",
+        "updatedAt": "2026-01-11T07:46:41.844Z"
+      },
+      {
+        "id": 51,
+        "storeId": 1,
+        "name": "美式咖啡(熱)",
+        "price": 100,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:42.523Z",
+        "updatedAt": "2026-01-11T07:46:42.523Z"
+      },
+      {
+        "id": 52,
+        "storeId": 1,
+        "name": "馬告咖啡(冰)",
+        "price": 150,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:43.187Z",
+        "updatedAt": "2026-01-11T07:46:43.187Z"
+      },
+      {
+        "id": 53,
+        "storeId": 1,
+        "name": "馬告咖啡(熱)",
+        "price": 150,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:43.887Z",
+        "updatedAt": "2026-01-11T07:46:43.887Z"
+      },
+      {
+        "id": 54,
+        "storeId": 1,
+        "name": "拿鐵咖啡(冰)",
+        "price": 150,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:44.566Z",
+        "updatedAt": "2026-01-11T07:46:44.566Z"
+      },
+      {
+        "id": 55,
+        "storeId": 1,
+        "name": "拿鐵咖啡(熱)",
+        "price": 150,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:45.271Z",
+        "updatedAt": "2026-01-11T07:46:45.271Z"
+      },
+      {
+        "id": 56,
+        "storeId": 1,
+        "name": "焦糖拿鐵(冰)",
+        "price": 180,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:45.950Z",
+        "updatedAt": "2026-01-11T07:46:45.950Z"
+      },
+      {
+        "id": 57,
+        "storeId": 1,
+        "name": "焦糖拿鐵(熱)",
+        "price": 180,
+        "categoryId": 54,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:46.652Z",
+        "updatedAt": "2026-01-11T07:46:46.652Z"
+      },
+      {
+        "id": 58,
+        "storeId": 1,
+        "name": "法棍佐刺蔥",
+        "price": 80,
+        "categoryId": 55,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:47.349Z",
+        "updatedAt": "2026-01-11T07:46:47.349Z"
+      },
+      {
+        "id": 59,
+        "storeId": 1,
+        "name": "小米豬肉粽",
+        "price": 100,
+        "categoryId": 55,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:48.027Z",
+        "updatedAt": "2026-01-11T07:46:48.027Z"
+      },
+      {
+        "id": 60,
+        "storeId": 1,
+        "name": "馬告豬肉",
+        "price": 200,
+        "categoryId": 55,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:48.752Z",
+        "updatedAt": "2026-01-11T07:46:48.752Z"
+      },
+      {
+        "id": 61,
+        "storeId": 1,
+        "name": "小米QQ球",
+        "price": 100,
+        "categoryId": 56,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:49.479Z",
+        "updatedAt": "2026-01-11T07:46:49.479Z"
+      },
+      {
+        "id": 62,
+        "storeId": 1,
+        "name": "薯條條道路通羅馬",
+        "price": 100,
+        "categoryId": 56,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:50.251Z",
+        "updatedAt": "2026-01-11T07:46:50.251Z"
+      },
+      {
+        "id": 63,
+        "storeId": 1,
+        "name": "馬上告白雞米花",
+        "price": 150,
+        "categoryId": 56,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:50.937Z",
+        "updatedAt": "2026-01-11T07:46:50.937Z"
+      },
+      {
+        "id": 64,
+        "storeId": 1,
+        "name": "三個一起來",
+        "price": 300,
+        "categoryId": 56,
+        "description": "",
+        "imageUrl": null,
+        "isAvailable": true,
+        "createdAt": "2026-01-11T07:46:51.770Z",
+        "updatedAt": "2026-01-11T07:46:51.770Z"
+      }
+    ],
+    "orders": [
+      {
+        "id": 1,
+        "storeId": 1,
+        "tableNumber": "5",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 80,
+        "createdAt": "2026-01-11T17:44:24.581Z",
+        "updatedAt": "2026-01-11T17:58:22.989Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 1,
+            "orderId": 1,
+            "menuItemId": 47,
+            "quantity": 1,
+            "price": 80,
+            "notes": "去冰",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "storeId": 1,
+        "tableNumber": "2",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 320,
+        "createdAt": "2026-01-11T18:12:30.356Z",
+        "updatedAt": "2026-01-11T18:14:45.383Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 5,
+            "orderId": 3,
+            "menuItemId": 58,
+            "quantity": 4,
+            "price": 80,
+            "notes": "",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "storeId": 1,
+        "tableNumber": "1",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 340,
+        "createdAt": "2026-01-11T17:59:03.953Z",
+        "updatedAt": "2026-01-11T18:14:49.386Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 2,
+            "orderId": 2,
+            "menuItemId": 47,
+            "quantity": 1,
+            "price": 80,
+            "notes": "半糖,去冰",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 3,
+            "orderId": 2,
+            "menuItemId": 57,
+            "quantity": 1,
+            "price": 180,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 4,
+            "orderId": 2,
+            "menuItemId": 58,
+            "quantity": 1,
+            "price": 80,
+            "notes": "加辣",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "storeId": 1,
+        "tableNumber": "4",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 850,
+        "createdAt": "2026-01-11T18:15:10.353Z",
+        "updatedAt": "2026-01-11T18:21:36.936Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 7,
+            "orderId": 4,
+            "menuItemId": 55,
+            "quantity": 3,
+            "price": 150,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 6,
+            "orderId": 4,
+            "menuItemId": 59,
+            "quantity": 4,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "storeId": 1,
+        "tableNumber": "3",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 950,
+        "createdAt": "2026-01-11T18:21:28.745Z",
+        "updatedAt": "2026-01-11T18:32:40.687Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 8,
+            "orderId": 5,
+            "menuItemId": 54,
+            "quantity": 2,
+            "price": 150,
+            "notes": "去冰",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 9,
+            "orderId": 5,
+            "menuItemId": 53,
+            "quantity": 1,
+            "price": 150,
+            "notes": "半糖",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 10,
+            "orderId": 5,
+            "menuItemId": 59,
+            "quantity": 3,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 11,
+            "orderId": 5,
+            "menuItemId": 61,
+            "quantity": 1,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 12,
+            "orderId": 5,
+            "menuItemId": 62,
+            "quantity": 1,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "storeId": 1,
+        "tableNumber": "2",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 400,
+        "createdAt": "2026-01-11T18:29:44.364Z",
+        "updatedAt": "2026-01-11T18:32:43.178Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 14,
+            "orderId": 6,
+            "menuItemId": 55,
+            "quantity": 1,
+            "price": 150,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 13,
+            "orderId": 6,
+            "menuItemId": 61,
+            "quantity": 1,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 15,
+            "orderId": 6,
+            "menuItemId": 63,
+            "quantity": 1,
+            "price": 150,
+            "notes": "",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "storeId": 1,
+        "tableNumber": "1",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 340,
+        "createdAt": "2026-01-11T18:32:50.759Z",
+        "updatedAt": "2026-01-11T18:37:34.138Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 16,
+            "orderId": 7,
+            "menuItemId": 61,
+            "quantity": 1,
+            "price": 100,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 17,
+            "orderId": 7,
+            "menuItemId": 46,
+            "quantity": 3,
+            "price": 80,
+            "notes": "少冰",
+            "status": "COMPLETED"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "storeId": 1,
+        "tableNumber": "8",
+        "type": "DINE_IN",
+        "status": "COMPLETED",
+        "totalAmount": 890,
+        "createdAt": "2026-01-11T18:38:03.187Z",
+        "updatedAt": "2026-01-11T18:50:35.668Z",
+        "isPaid": true,
+        "items": [
+          {
+            "id": 20,
+            "orderId": 8,
+            "menuItemId": 60,
+            "quantity": 1,
+            "price": 200,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 21,
+            "orderId": 8,
+            "menuItemId": 63,
+            "quantity": 1,
+            "price": 150,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 18,
+            "orderId": 8,
+            "menuItemId": 45,
+            "quantity": 3,
+            "price": 120,
+            "notes": "",
+            "status": "COMPLETED"
+          },
+          {
+            "id": 19,
+            "orderId": 8,
+            "menuItemId": 57,
+            "quantity": 1,
+            "price": 180,
+            "notes": "",
+            "status": "COMPLETED"
+          }
+        ]
+      }
+    ]
+  }
+}

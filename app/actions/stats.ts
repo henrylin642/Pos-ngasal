@@ -92,8 +92,13 @@ export async function getMonthlyStats(year: number, month: number) {
 
     const dailyRevenue: Record<string, number> = {}
     orders.forEach(order => {
-        const d = new Date(order.createdAt)
-        const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+        // Shift to Taipei Time (UTC+8) manually to ensure server consistency
+        // getDailyOrders uses +8 offset, so valid data range for "12th" is 11th 16:00 UTC to 12th 16:00 UTC.
+        // We must map these UTC timestamps back to "2026-01-12".
+        const utcTime = order.createdAt.getTime()
+        const taipeiTime = new Date(utcTime + 8 * 60 * 60 * 1000)
+
+        const dateKey = `${taipeiTime.getUTCFullYear()}-${String(taipeiTime.getUTCMonth() + 1).padStart(2, '0')}-${String(taipeiTime.getUTCDate()).padStart(2, '0')}`
         dailyRevenue[dateKey] = (dailyRevenue[dateKey] || 0) + order.totalAmount
     })
 
@@ -105,10 +110,13 @@ export async function getDailyOrders(dateStr: string) {
     if (!user?.storeId) return []
     const storeId = user.storeId as number
 
-    const start = new Date(dateStr)
-    start.setHours(0, 0, 0, 0)
-    const end = new Date(start)
-    end.setHours(23, 59, 59, 999)
+    // dateStr is 'YYYY-MM-DD' representing Taipei Date.
+    // We want 00:00:00 Taipei to 23:59:59 Taipei.
+    // 00:00 Taipei = Previous Day 16:00 UTC.
+    // Easy way: Construct explicit ISO string with offset.
+
+    const start = new Date(`${dateStr}T00:00:00+08:00`)
+    const end = new Date(`${dateStr}T23:59:59.999+08:00`)
 
     const orders = await prisma.order.findMany({
         where: {
