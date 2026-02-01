@@ -162,7 +162,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
 
     // Reuseable Cart Component
     const CartContent = ({ onClose }: { onClose?: () => void }) => (
-        <div className="flex flex-col h-full bg-white dark:bg-gray-800">
+        <div className="flex flex-col h-full min-h-0 bg-white dark:bg-gray-800">
             <div className="p-4 border-b bg-gray-50 dark:bg-gray-900/50">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 text-lg font-semibold">
@@ -208,7 +208,7 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                 </div>
             </div>
 
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 min-h-0 p-4 overscroll-contain">
                 {cart.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-40 text-muted-foreground space-y-2">
                         <Coffee className="w-10 h-10 opacity-20" />
@@ -366,8 +366,8 @@ export default function PosClient({ initialItems, categories, initialNotes }: { 
                             購物車
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="h-[85vh] p-0 rounded-t-xl">
-                        <div className="h-full pt-4">
+                    <SheetContent side="bottom" className="h-[85dvh] p-0 rounded-t-xl">
+                        <div className="h-full min-h-0 pt-4">
                             <CartContent onClose={() => setIsCartOpen(false)} />
                         </div>
                     </SheetContent>
