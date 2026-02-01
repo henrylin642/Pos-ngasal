@@ -164,7 +164,12 @@ export function SalesCalendar() {
     return (
         <Card className="col-span-1 md:col-span-2 lg:col-span-3 h-fit">
             <CardHeader>
-                <CardTitle>營收日曆與銷售明細</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                    營收日曆與銷售明細
+                    <span className="rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-wide text-muted-foreground">
+                        LAYOUT v2
+                    </span>
+                </CardTitle>
                 <CardDescription>查看每日營收、天氣與詳細訂單</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
