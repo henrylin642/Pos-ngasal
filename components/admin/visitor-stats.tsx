@@ -14,11 +14,11 @@ export function VisitorStatsCard() {
 
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2 md:p-4">
                 <CardTitle className="text-sm font-medium">今日訪客統計</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 pt-0 md:p-4">
                 <div className="flex justify-between items-end">
                     <div>
                         <div className="text-2xl font-bold">{stats.uniqueIPs}</div>

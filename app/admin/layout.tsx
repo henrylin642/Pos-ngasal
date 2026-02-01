@@ -80,7 +80,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             {/* Mobile Sidebar */}
             <div className="flex flex-col flex-1">
-                <header className="flex h-14 items-center border-b bg-background px-6 md:hidden">
+                <header className="flex h-12 items-center border-b bg-background px-4 md:hidden">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="outline" size="icon">
@@ -95,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <div className="font-semibold ml-4">管理控制台</div>
                 </header>
 
-                <main className="flex-1 overflow-auto p-6">
+                <main className="flex-1 overflow-auto p-3 sm:p-4 md:p-6">
                     {children}
                 </main>
             </div>

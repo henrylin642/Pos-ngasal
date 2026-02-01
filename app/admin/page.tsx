@@ -19,22 +19,22 @@ export default async function AdminDashboard() {
     const isPositive = growth >= 0
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">儀表板</h1>
-                <div className="flex items-center">
+        <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-wrap justify-between items-center gap-2">
+                <h1 className="text-2xl md:text-3xl font-bold">儀表板</h1>
+                <div className="flex items-center gap-2">
                     <BackupButton />
                     <RestoreButton />
                 </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 md:gap-4 md:grid-cols-3">
                 <Card className="p-0">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2 md:p-4">
                         <CardTitle className="text-sm font-medium">今日總訂單數</CardTitle>
                         <ListOrdered className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent className="p-4 pt-0">
+                    <CardContent className="p-3 pt-0 md:p-4">
                         <div className="text-2xl font-bold">{stats.totalOrders}</div>
                     </CardContent>
                 </Card>
@@ -42,11 +42,11 @@ export default async function AdminDashboard() {
                 <VisitorStatsCard />
 
                 <Card className="p-0">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2 md:p-4">
                         <CardTitle className="text-sm font-medium">今日總營收</CardTitle>
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent className="p-4 pt-0">
+                    <CardContent className="p-3 pt-0 md:p-4">
                         <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(0)}</div>
                         <p className="text-xs text-muted-foreground mt-1 flex items-center">
                             {isPositive ? <ArrowUpRight className="w-3 h-3 text-green-500 mr-1" /> : <ArrowDownRight className="w-3 h-3 text-red-500 mr-1" />}
