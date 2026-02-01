@@ -6,16 +6,10 @@ const prisma = new PrismaClient()
 async function main() {
     const password = await hash('123456', 12) // Default password for all
 
-    // Create Default Store
-    const store = await prisma.store.upsert({
-        where: { code: 'demo' },
-        update: {},
-        create: {
-            code: 'demo',
-            name: 'Demo Store',
-        }
-    })
-    console.log(`Store created: ${store.name} (${store.code})`)
+    const stores = [
+        { code: 'demo', name: 'Demo Store' },
+        { code: 'ngasal', name: 'Ngasal' },
+    ]
 
     const users = [
         { username: 'admin', role: 'ADMIN' },
@@ -23,25 +17,37 @@ async function main() {
         { username: 'front', role: 'FRONT' },
     ]
 
-    for (const user of users) {
-        const upsertUser = await prisma.user.upsert({
-            where: {
-                storeId_username: {
-                    storeId: store.id,
-                    username: user.username
-                }
-            },
-            update: {
-                password: password,
-            },
+    for (const storeData of stores) {
+        const store = await prisma.store.upsert({
+            where: { code: storeData.code },
+            update: { name: storeData.name },
             create: {
-                storeId: store.id,
-                username: user.username,
-                password: password,
-                role: user.role,
-            },
+                code: storeData.code,
+                name: storeData.name,
+            }
         })
-        console.log(`User created: ${upsertUser.username} for store ${store.code}`)
+        console.log(`Store created: ${store.name} (${store.code})`)
+
+        for (const user of users) {
+            const upsertUser = await prisma.user.upsert({
+                where: {
+                    storeId_username: {
+                        storeId: store.id,
+                        username: user.username
+                    }
+                },
+                update: {
+                    password: password,
+                },
+                create: {
+                    storeId: store.id,
+                    username: user.username,
+                    password: password,
+                    role: user.role,
+                },
+            })
+            console.log(`User created: ${upsertUser.username} for store ${store.code}`)
+        }
     }
 }
 

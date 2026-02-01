@@ -168,8 +168,8 @@ export function SalesCalendar() {
                 <CardDescription>查看每日營收、天氣與詳細訂單</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
-                <div className="flex flex-col lg:flex-row gap-8">
-                    <div className="flex-1 flex justify-center">
+                <div className="flex flex-col gap-8">
+                    <div className="flex justify-center">
                         <Calendar
                             mode="single"
                             selected={date}
@@ -188,7 +188,7 @@ export function SalesCalendar() {
                         />
                     </div>
 
-                    <div className="w-full md:w-64 space-y-6">
+                    <div className="w-full space-y-6">
                         {/* Daily Summary Card */}
                         <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border">
                             <div className="flex justify-between items-start">
